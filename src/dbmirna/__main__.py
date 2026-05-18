@@ -37,7 +37,7 @@ def main() -> int:
 
     fun_parser = subparsers.add_parser("load-funmirbench", help="Export normalized FuNmiRBench records to JSONL.")
     fun_parser.add_argument("--out-dir", required=True, help="Output directory for JSONL bundle.")
-    fun_parser.add_argument("--repo-root", default="/homes/ezach01/FuNmiRBench", help="FuNmiRBench repository root.")
+    fun_parser.add_argument("--repo-root", required=True, help="FuNmiRBench repository root.")
     fun_parser.add_argument("--max-experiments", type=int, default=None, help="Optional cap on experiment rows.")
     fun_parser.add_argument("--skip-predictor-scores", action="store_true", help="Skip predictor score exports.")
     fun_parser.add_argument("--predictor-tool", action="append", dest="predictor_tools", default=None, help="Restrict to one or more predictor tool ids.")
@@ -45,13 +45,13 @@ def main() -> int:
 
     gra_parser = subparsers.add_parser("load-gra", help="Export normalized genomic-region-annotator records to JSONL.")
     gra_parser.add_argument("--out-dir", required=True, help="Output directory for JSONL bundle.")
-    gra_parser.add_argument("--repo-root", default="/homes/ezach01/genomic-region-annotator", help="genomic-region-annotator repository root.")
+    gra_parser.add_argument("--repo-root", required=True, help="genomic-region-annotator repository root.")
     gra_parser.add_argument("--dataset-stem", default="Hejret_2023", help="Dataset stem such as Hejret_2023.")
     gra_parser.add_argument("--max-sites", type=int, default=None, help="Optional cap on site rows.")
 
     hejret_parser = subparsers.add_parser("load-hejret-cache", help="Export cached Hejret AGO2 CLASH train/test MRE rows to JSONL.")
     hejret_parser.add_argument("--out-dir", required=True, help="Output directory for JSONL bundle.")
-    hejret_parser.add_argument("--cache-root", default="/homes/ezach01/.miRBench/datasets/14501607/AGO2_CLASH_Hejret2023", help="Hejret cache root containing train/test dataset.tsv files.")
+    hejret_parser.add_argument("--cache-root", required=True, help="Hejret cache root containing train/test dataset.tsv files.")
     hejret_parser.add_argument("--split", action="append", dest="splits", default=None, help="Split to export. Repeat for multiple splits. Defaults to train and test.")
     hejret_parser.add_argument("--max-rows-per-split", type=int, default=None, help="Optional row cap per split.")
 
