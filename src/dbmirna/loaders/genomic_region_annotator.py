@@ -23,9 +23,6 @@ from dbmirna.utils import (
 )
 
 
-DEFAULT_REPO_ROOT = Path("/homes/ezach01/genomic-region-annotator")
-
-
 def _source_ref(path: str | Path, *, source_repo: str, artifact_id: str, run_id: str) -> dict:
     return {
         "source_repo": source_repo,
@@ -42,7 +39,7 @@ def _obs_key(dataset_name: str, raw_id: str) -> str:
 def export_genomic_region_annotator(
     *,
     out_dir: str | Path,
-    repo_root: str | Path = DEFAULT_REPO_ROOT,
+    repo_root: str | Path,
     dataset_stem: str = "Hejret_2023",
     max_sites: int | None = None,
 ) -> dict:
