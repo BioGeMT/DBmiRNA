@@ -1,8 +1,8 @@
 # DBmiRNA
 
-DBmiRNA is a transcript-aware miRNA knowledgebase. It integrates miRNA, gene, transcript, read/MRE, nucleotide-profile, experiment, predictor, literature, and provenance records into one PostgreSQL-backed schema while preserving source context.
+DBmiRNA is a transcript-aware miRNA knowledgebase. It integrates miRNA and gene metadata with transcript-level, miRNA-recognition-element-level, nucleotide-level, and gene-level evidence while preserving source context.
 
-The central design choice is that a miRNA-gene relationship is not treated as only a flat pair. DBmiRNA keeps transcript, site, and nucleotide-level evidence between the miRNA and gene anchors so region labels such as `UTR3`, `CDS`, and `INTRON` remain traceable.
+The central design choice is that miRNAs and genes are the two metadata anchors. Evidence can then be attached at three middle layers: transcript level, miRNA recognition element (MRE) level, and nucleotide level. Gene-level evidence from FuNmiRBench is kept separately from MRE-level evidence from MirBench/miRBench-style datasets and predictors.
 
 ## Integrated Projects
 
@@ -14,10 +14,26 @@ The central design choice is that a miRNA-gene relationship is not treated as on
 
 ## Data Model
 
+DBmiRNA starts with two canonical metadata collections:
+
+- `mirnas`: miRNA metadata annotated to `miRBase v22`
+- `genes`: gene metadata annotated to `Ensembl v115`
+
+The middle evidence layers are:
+
+- transcript level: `transcripts`, `transcript_feature_tracks`, `site_transcript_overlaps`
+- MRE level: `mirna_recognition_elements`, `mre_sites`, `mre_predictor_scores`
+- nucleotide level: `nucleotide_profiles`
+
+Gene-level FuNmiRBench evidence is represented separately:
+
+- `experiment_gene_effects`: gene-level RNA-seq differential expression effects
+- `predictor_scores`: gene-level miRNA-gene predictor scores
+
 DBmiRNA is organized into four PostgreSQL schemas:
 
 - `core`: miRNAs, genes, transcripts, miRNA-gene pairs, transcript feature tracks
-- `evidence`: experiments, experiment gene effects, predictors, predictor scores, miRNA recognition elements, site observations, transcript overlaps, MRE sites, nucleotide profiles
+- `evidence`: gene-level RNA-seq effects, gene-level predictor scores, MRE records, MRE-level predictor scores, site/transcript overlaps, MRE sites, nucleotide profiles
 - `literature`: documents, mentions, curated assertions
 - `provenance`: ingestion runs
 
@@ -147,6 +163,7 @@ PYTHONPATH=src python -m dbmirna module-info genomic_region_annotator
 - [src/dbmirna](src/dbmirna): Python package and CLI
 - [sql/schema.sql](sql/schema.sql): PostgreSQL schema
 - [schemas/collections.schema.json](schemas/collections.schema.json): JSONL collection schema bundle
+- [schemas/mre_predictor_scores.schema.json](schemas/mre_predictor_scores.schema.json): MRE-level predictor score schema
 - [schemas/collection_registry.json](schemas/collection_registry.json): collection registry
 - [integrations/module_registry.json](integrations/module_registry.json): integration registry
 - [integrations/dataset_catalog.json](integrations/dataset_catalog.json): dataset catalog
