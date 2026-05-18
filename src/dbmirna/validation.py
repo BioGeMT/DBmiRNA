@@ -4,8 +4,12 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from .registry import load_schema_bundle
+from .registry import PROJECT_ROOT, load_schema_bundle
 
+
+EXTRA_COLLECTION_SCHEMA_PATHS = {
+    "mre_predictor_scores": PROJECT_ROOT / "schemas" / "mre_predictor_scores.schema.json",
+}
 
 RUN_ID_COLLECTIONS = (
     "transcript_feature_tracks",
@@ -23,10 +27,6 @@ RUN_ID_COLLECTIONS = (
     "literature_assertions",
 )
 
-EXTRA_COLLECTIONS_WITH_RELATIONSHIP_VALIDATION = {
-    "mre_predictor_scores",
-}
-
 
 def validate_output_bundle(
     out_dir: str | Path,
@@ -36,7 +36,7 @@ def validate_output_bundle(
     out_dir = Path(out_dir)
     errors: list[str] = []
     schema_bundle = load_schema_bundle()
-    defs = schema_bundle.get("$defs", {})
+    defs = _load_collection_defs(schema_bundle)
 
     if not out_dir.exists():
         return [f"Output directory does not exist: {out_dir}."]
@@ -58,13 +58,12 @@ def validate_output_bundle(
 
     for path in jsonl_paths:
         collection = path.stem
-        has_schema = collection in defs
-        if not has_schema and collection not in EXTRA_COLLECTIONS_WITH_RELATIONSHIP_VALIDATION:
+        if collection not in defs:
             errors.append(f"{path.name} does not match a known collection schema.")
             continue
 
         validator = None
-        if has_schema and jsonschema is not None:
+        if jsonschema is not None:
             validator = jsonschema.Draft202012Validator(
                 {"$ref": f"#/$defs/{collection}", "$defs": defs}
             )
@@ -105,6 +104,16 @@ def validate_output_bundle(
     )
     errors.extend(_validate_relationships(records_by_collection))
     return errors
+
+
+def _load_collection_defs(schema_bundle: dict) -> dict:
+    defs = dict(schema_bundle.get("$defs", {}))
+    shared_defs = dict(defs)
+    for collection, path in EXTRA_COLLECTION_SCHEMA_PATHS.items():
+        schema = json.loads(path.read_text(encoding="utf-8"))
+        schema.setdefault("$defs", shared_defs)
+        defs[collection] = schema
+    return defs
 
 
 def _validate_bundle_completeness(
