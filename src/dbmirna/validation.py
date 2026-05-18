@@ -14,6 +14,7 @@ RUN_ID_COLLECTIONS = (
     "predictor_scores",
     "site_observations",
     "mirna_recognition_elements",
+    "mre_predictor_scores",
     "site_transcript_overlaps",
     "mre_sites",
     "nucleotide_profiles",
@@ -172,6 +173,12 @@ def _validate_relationships(records_by_collection: dict[str, dict[str, dict]]) -
     for record in records_by_collection.get("mirna_recognition_elements", {}).values():
         require("mirna_recognition_elements", record, "mirna_id", "mirnas", required=True)
         require("mirna_recognition_elements", record, "gene_id", "genes")
+
+    for record in records_by_collection.get("mre_predictor_scores", {}).values():
+        require("mre_predictor_scores", record, "predictor_id", "predictors", required=True)
+        require("mre_predictor_scores", record, "mre_id", "mirna_recognition_elements", required=True)
+        require("mre_predictor_scores", record, "mirna_id", "mirnas", required=True)
+        require("mre_predictor_scores", record, "gene_id", "genes")
 
     for record in records_by_collection.get("site_transcript_overlaps", {}).values():
         require("site_transcript_overlaps", record, "observation_id", "site_observations", required=True)
