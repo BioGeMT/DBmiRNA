@@ -15,6 +15,9 @@ authors = [
   { name = "BioGeMT Lab" }
 ]
 
+[project.scripts]
+dbmirna = "dbmirna.__main__:main"
+
 [project.optional-dependencies]
 postgres = [
   "psycopg[binary]>=3.1"
