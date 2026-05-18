@@ -67,6 +67,8 @@ source .venv/bin/activate
 uv pip install -e '.[postgres]'
 ```
 
+The package exposes a `dbmirna` console command. Run CLI commands with `uv run dbmirna ...`.
+
 ## PostgreSQL
 
 Create a PostgreSQL database and pass its DSN to the DBmiRNA CLI. For example, for a local PostgreSQL server:
@@ -79,7 +81,7 @@ export DBMIRNA_DSN='postgresql:///dbmirna'
 Initialize the DBmiRNA schema:
 
 ```bash
-PYTHONPATH=src python -m dbmirna init-postgres --dsn "$DBMIRNA_DSN"
+uv run dbmirna init-postgres --dsn "$DBMIRNA_DSN"
 ```
 
 ## Validation
@@ -87,20 +89,20 @@ PYTHONPATH=src python -m dbmirna init-postgres --dsn "$DBMIRNA_DSN"
 Validate project manifests:
 
 ```bash
-PYTHONPATH=src python -m dbmirna validate
+uv run dbmirna validate
 ```
 
 Validate an exported JSONL bundle:
 
 ```bash
-PYTHONPATH=src python -m dbmirna validate-outputs \
+uv run dbmirna validate-outputs \
   --out-dir outputs/gra_sample
 ```
 
 Use strict bundle validation when you want to confirm that a bundle is loadable as data, not just structurally valid:
 
 ```bash
-PYTHONPATH=src python -m dbmirna validate-outputs \
+uv run dbmirna validate-outputs \
   --out-dir outputs/gra_sample \
   --require-data-collection
 ```
@@ -112,7 +114,7 @@ Output validation checks JSON schema conformance, duplicate primary keys, known 
 Export cached Hejret AGO2 CLASH train/test MRE reads:
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-hejret-cache \
+uv run dbmirna load-hejret-cache \
   --out-dir outputs/hejret_cache \
   --cache-root /path/to/AGO2_CLASH_Hejret2023
 ```
@@ -120,7 +122,7 @@ PYTHONPATH=src python -m dbmirna load-hejret-cache \
 Export a Zenodo MRE TSV or TSV.GZ file. Columns matching the base MRE layout are exported to `mirna_recognition_elements`; numeric predictor columns such as `TargetScanCnn_McGeary2019`, `miRBenchCNN_Manakov`, and `miRBind2` are exported to `mre_predictor_scores`; per-nucleotide conservation arrays such as `gene_phyloP` and `gene_phastCons` are exported to `nucleotide_profiles`.
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
+uv run dbmirna load-zenodo-mre-tsv \
   --out-dir outputs/hejret_test_predictions \
   --input-path /path/to/AGO2_CLASH_Hejret2023_test_predictions.tsv \
   --dataset-id AGO2_CLASH_Hejret2023_test_predictions \
@@ -130,7 +132,7 @@ PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
 ```
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
+uv run dbmirna load-zenodo-mre-tsv \
   --out-dir outputs/manakov_leftout \
   --input-path /path/to/AGO2_eCLIP_Manakov2022_leftout.tsv.gz \
   --dataset-id AGO2_eCLIP_Manakov2022_leftout \
@@ -142,7 +144,7 @@ PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
 Export a genomic-region-annotator sample:
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-gra \
+uv run dbmirna load-gra \
   --out-dir outputs/gra_sample \
   --repo-root /path/to/genomic-region-annotator \
   --dataset-stem Hejret_2023 \
@@ -152,7 +154,7 @@ PYTHONPATH=src python -m dbmirna load-gra \
 Export a FuNmiRBench sample:
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-funmirbench \
+uv run dbmirna load-funmirbench \
   --out-dir outputs/funmirbench_sample \
   --repo-root /path/to/FuNmiRBench \
   --max-experiments 2 \
@@ -165,7 +167,7 @@ PYTHONPATH=src python -m dbmirna load-funmirbench \
 Load a validated JSONL bundle into PostgreSQL:
 
 ```bash
-PYTHONPATH=src python -m dbmirna load-postgres \
+uv run dbmirna load-postgres \
   --out-dir outputs/hejret_cache \
   --dsn "$DBMIRNA_DSN"
 ```
@@ -175,9 +177,9 @@ The loader applies strict bundle validation first, then upserts records in depen
 ## Useful Commands
 
 ```bash
-PYTHONPATH=src python -m dbmirna overview
-PYTHONPATH=src python -m dbmirna normalization-info
-PYTHONPATH=src python -m dbmirna module-info genomic_region_annotator
+uv run dbmirna overview
+uv run dbmirna normalization-info
+uv run dbmirna module-info genomic_region_annotator
 ```
 
 ## Repository Contents
