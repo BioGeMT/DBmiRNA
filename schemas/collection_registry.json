@@ -1,11 +1,14 @@
 {
   "database_name": "DBmiRNA",
   "schema_bundle": "schemas/collections.schema.json",
+  "extra_schema_files": {
+    "mre_predictor_scores": "schemas/mre_predictor_scores.schema.json"
+  },
   "collections": [
     {
       "name": "mirnas",
       "schema_def": "mirnas",
-      "purpose": "Canonical mature miRNA entities.",
+      "purpose": "Canonical mature miRNA metadata annotated to miRBase v22.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -18,7 +21,7 @@
     {
       "name": "genes",
       "schema_def": "genes",
-      "purpose": "Canonical gene entities.",
+      "purpose": "Canonical gene metadata annotated to Ensembl v115.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -64,7 +67,7 @@
     {
       "name": "experiments",
       "schema_def": "experiments",
-      "purpose": "Experiment metadata, mainly from FuNmiRBench.",
+      "purpose": "FuNmiRBench experiment metadata for gene-level RNA-seq evidence.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -78,7 +81,7 @@
     {
       "name": "experiment_gene_effects",
       "schema_def": "experiment_gene_effects",
-      "purpose": "Gene-level perturbation evidence from differential expression tables.",
+      "purpose": "FuNmiRBench gene-level RNA-seq differential expression effects.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -102,7 +105,7 @@
     {
       "name": "predictor_scores",
       "schema_def": "predictor_scores",
-      "purpose": "Predictor-derived miRNA-gene scores.",
+      "purpose": "FuNmiRBench gene-level predictor-derived miRNA-gene scores.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -130,7 +133,7 @@
     {
       "name": "mirna_recognition_elements",
       "schema_def": "mirna_recognition_elements",
-      "purpose": "Primary MRE/read-level CLASH records with labels, sequences, coordinates, split membership, and raw source context.",
+      "purpose": "MirBench or miRBench MRE/read-level records with labels, sequences, coordinates, split membership, and raw source context.",
       "primary_key": "_id",
       "indexes": [
         "_id",
@@ -142,6 +145,20 @@
         "chr",
         "start",
         "end"
+      ]
+    },
+    {
+      "name": "mre_predictor_scores",
+      "schema_def": "mre_predictor_scores",
+      "schema_file": "schemas/mre_predictor_scores.schema.json",
+      "purpose": "MRE-level predictor outputs linked directly to MirBench/miRBench MRE records.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "predictor_id",
+        "mre_id",
+        "mirna_id",
+        "gene_id"
       ]
     },
     {
