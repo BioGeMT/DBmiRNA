@@ -1,133 +1,256 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-labelledby="title desc">
-  <title id="title">DBmiRNA Database Schema</title>
-  <desc id="desc">Schema figure showing miRNA metadata and gene metadata as anchors, with transcript-level, read and MRE-level, nucleotide-level, gene-level evidence, literature, and provenance collections between and around them.</desc>
+<svg xmlns='http://www.w3.org/2000/svg' width='2000' height='1280' viewBox='0 0 2000 1280' role='img' aria-labelledby='title desc'>
+  <title id='title'>DBmiRNA Database Schema Overview</title>
+  <desc id='desc'>DBmiRNA PostgreSQL schema shown as dbdiagram-style tables with core, evidence, literature, and provenance relationships.</desc>
   <defs>
-    <style>
+    <style><![CDATA[
       .bg { fill: #ffffff; }
-      .title { font: 700 34px Arial, sans-serif; fill: #1f2933; }
-      .subtitle { font: 400 17px Arial, sans-serif; fill: #52606d; }
-      .group { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; rx: 12; ry: 12; }
-      .anchorLeft { fill: #eef6ff; stroke: #5b8def; stroke-width: 2; rx: 12; ry: 12; }
-      .anchorRight { fill: #f0fdf4; stroke: #45a557; stroke-width: 2; rx: 12; ry: 12; }
-      .middle { fill: #fff7ed; stroke: #f59e0b; stroke-width: 2; rx: 12; ry: 12; }
-      .evidence { fill: #f5f3ff; stroke: #8b5cf6; stroke-width: 2; rx: 12; ry: 12; }
-      .support { fill: #f9fafb; stroke: #94a3b8; stroke-width: 2; rx: 12; ry: 12; }
-      .nodeText { font: 700 19px Arial, sans-serif; fill: #1f2933; text-anchor: middle; dominant-baseline: middle; }
-      .metaText { font: 400 14px Arial, sans-serif; fill: #475569; text-anchor: middle; }
-      .groupText { font: 700 19px Arial, sans-serif; fill: #334155; }
-      .arrow { stroke: #475569; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
-      .arrowSoft { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrowSoft); }
-      .dashed { stroke-dasharray: 8 7; }
-      .label { font: 600 13px Arial, sans-serif; fill: #64748b; text-anchor: middle; }
-    </style>
-    <marker id="arrow" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 11 3.5, 0 7" fill="#475569"/>
-    </marker>
-    <marker id="arrowSoft" markerWidth="11" markerHeight="11" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 11 3.5, 0 7" fill="#64748b"/>
-    </marker>
+      .card { fill: #f7f7f8; stroke: none; }
+      .head { fill: #2b5b8c; }
+      .rel { fill: none; stroke: #c8cdd2; stroke-width: 3; stroke-linecap: round; }
+      .title { font: 700 23px Arial, Helvetica, sans-serif; fill: #ffffff; }
+      .schema { font: 700 12px Arial, Helvetica, sans-serif; fill: #dbeafe; text-anchor: end; letter-spacing: .5px; }
+      .name { font: 400 18px Arial, Helvetica, sans-serif; fill: #2f343b; }
+      .type { font: 600 15px Arial, Helvetica, sans-serif; fill: #8a8f95; text-anchor: end; }
+      .section { font: 700 16px Arial, Helvetica, sans-serif; fill: #94a3b8; letter-spacing: 2px; }
+      .note { font: 400 14px Arial, Helvetica, sans-serif; fill: #64748b; }
+    ]]></style>
   </defs>
+  <rect width='2000' height='1280' class='bg'/>
+  <text x='70' y='52' class='section'>CORE</text>
+  <text x='685' y='52' class='section'>EVIDENCE</text>
+  <text x='1510' y='52' class='section'>LITERATURE</text>
+  <text x='680' y='1148' class='section'>PROVENANCE</text>
 
-  <rect width="1600" height="960" class="bg"/>
-  <text x="70" y="62" class="title">DBmiRNA Database Schema</text>
-  <text x="70" y="92" class="subtitle">Gene and miRNA metadata anchor the model. Transcript, read/MRE, and nucleotide schemas preserve the biological context between them.</text>
+  <g id='relationships'>
+    <path class='rel' d='M 350 212 C 455 212, 455 170, 560 170'/>
+    <path class='rel' d='M 350 482 C 455 482, 455 242, 560 242'/>
+    <path class='rel' d='M 350 482 C 455 482, 455 455, 560 455'/>
+    <path class='rel' d='M 840 442 C 900 442, 900 238, 960 238'/>
+    <path class='rel' d='M 840 545 C 900 545, 900 733, 960 733'/>
+    <path class='rel' d='M 1240 660 C 1295 660, 1295 818, 1350 818'/>
+    <path class='rel' d='M 1240 760 C 1295 760, 1295 926, 1350 926'/>
+    <path class='rel' d='M 840 210 C 900 210, 900 117, 960 117'/>
+    <path class='rel' d='M 1240 180 C 1295 180, 1295 168, 1350 168'/>
+    <path class='rel' d='M 1240 292 C 1295 292, 1295 367, 1350 367'/>
+    <path class='rel' d='M 1240 442 C 1295 442, 1295 460, 1350 460'/>
+    <path class='rel' d='M 350 212 C 468 212, 468 655, 685 655'/>
+    <path class='rel' d='M 350 482 C 482 482, 482 888, 685 888'/>
+    <path class='rel' d='M 840 242 C 1035 242, 1035 888, 685 888'/>
+    <path class='rel' d='M 840 455 C 905 455, 905 655, 685 655'/>
+    <path class='rel' d='M 1240 920 C 1340 920, 1340 663, 1510 663'/>
+    <path class='rel' d='M 1790 330 C 1825 330, 1825 520, 1790 520'/>
+    <path class='rel' d='M 1510 520 C 1420 520, 1420 220, 840 220'/>
+    <path class='rel' d='M 1510 630 C 1425 630, 1425 492, 350 492'/>
+    <path class='rel' d='M 1510 785 C 1425 785, 1425 225, 840 225'/>
+    <path class='rel' d='M 1510 890 C 1425 890, 1425 500, 350 500'/>
+    <path class='rel' d='M 270 330 C 270 1035, 760 1035, 760 1152'/>
+    <path class='rel' d='M 760 345 C 760 1040, 760 1040, 760 1152'/>
+    <path class='rel' d='M 1090 328 C 1090 1038, 900 1038, 900 1152'/>
+    <path class='rel' d='M 1090 840 C 1090 1040, 900 1040, 900 1152'/>
+    <path class='rel' d='M 1650 1040 C 1650 1115, 1040 1115, 1040 1152'/>
+  </g>
 
-  <rect x="45" y="150" width="285" height="250" class="group"/>
-  <text x="70" y="185" class="groupText">miRNA Metadata Schema</text>
-  <rect x="82" y="220" width="210" height="72" class="anchorLeft"/>
-  <text x="187" y="256" class="nodeText">mirnas</text>
-  <text x="187" y="325" class="metaText">name, accession, family, arm</text>
-  <text x="187" y="348" class="metaText">sequence, aliases, source refs</text>
+  <g id='tables'>
+    <g id='core-mirnas'>
+      <rect x='70' y='90' width='280' height='240' rx='2' class='card'/><rect x='70' y='90' width='280' height='50' rx='2' class='head'/><rect x='70' y='138' width='280' height='3' class='head'/>
+      <text x='92' y='123' class='title'>mirnas</text><text x='330' y='123' class='schema'>core</text>
+      <text x='92' y='168' class='name'>id</text><text x='330' y='168' class='type'>text pk</text>
+      <text x='92' y='196' class='name'>canonical_name</text><text x='330' y='196' class='type'>text</text>
+      <text x='92' y='224' class='name'>species</text><text x='330' y='224' class='type'>text</text>
+      <text x='92' y='252' class='name'>sequence</text><text x='330' y='252' class='type'>text</text>
+      <text x='92' y='280' class='name'>family</text><text x='330' y='280' class='type'>text</text>
+      <text x='92' y='308' class='name'>source_refs</text><text x='330' y='308' class='type'>jsonb</text>
+    </g>
 
-  <rect x="1270" y="150" width="285" height="250" class="group"/>
-  <text x="1295" y="185" class="groupText">Gene Metadata Schema</text>
-  <rect x="1308" y="220" width="210" height="72" class="anchorRight"/>
-  <text x="1413" y="256" class="nodeText">genes</text>
-  <text x="1413" y="325" class="metaText">symbol, accession, species</text>
-  <text x="1413" y="348" class="metaText">aliases, normalization, source refs</text>
+    <g id='core-genes'>
+      <rect x='70' y='360' width='280' height='240' rx='2' class='card'/><rect x='70' y='360' width='280' height='50' rx='2' class='head'/><rect x='70' y='408' width='280' height='3' class='head'/>
+      <text x='92' y='393' class='title'>genes</text><text x='330' y='393' class='schema'>core</text>
+      <text x='92' y='438' class='name'>id</text><text x='330' y='438' class='type'>text pk</text>
+      <text x='92' y='466' class='name'>canonical_symbol</text><text x='330' y='466' class='type'>text</text>
+      <text x='92' y='494' class='name'>species</text><text x='330' y='494' class='type'>text</text>
+      <text x='92' y='522' class='name'>canonical_accession</text><text x='330' y='522' class='type'>text</text>
+      <text x='92' y='550' class='name'>aliases</text><text x='330' y='550' class='type'>text[]</text>
+      <text x='92' y='578' class='name'>normalization</text><text x='330' y='578' class='type'>jsonb</text>
+    </g>
 
-  <rect x="385" y="125" width="830" height="610" class="group"/>
-  <text x="410" y="160" class="groupText">Interaction and Evidence Spine</text>
+    <g id='core-pairs'>
+      <rect x='560' y='90' width='280' height='212' rx='2' class='card'/><rect x='560' y='90' width='280' height='50' rx='2' class='head'/><rect x='560' y='138' width='280' height='3' class='head'/>
+      <text x='582' y='123' class='title'>mirna_gene_pairs</text><text x='820' y='123' class='schema'>core</text>
+      <text x='582' y='168' class='name'>id</text><text x='820' y='168' class='type'>text pk</text>
+      <text x='582' y='196' class='name'>mirna_id</text><text x='820' y='196' class='type'>text fk</text>
+      <text x='582' y='224' class='name'>gene_id</text><text x='820' y='224' class='type'>text fk</text>
+      <text x='582' y='252' class='name'>evidence_counts</text><text x='820' y='252' class='type'>jsonb</text>
+      <text x='582' y='280' class='name'>support_summary</text><text x='820' y='280' class='type'>jsonb</text>
+    </g>
 
-  <rect x="684" y="195" width="232" height="76" class="evidence"/>
-  <text x="800" y="233" class="nodeText">mirna_gene_pairs</text>
-  <text x="800" y="255" class="metaText">pair hub and support rollup</text>
+    <g id='core-transcripts'>
+      <rect x='560' y='330' width='280' height='268' rx='2' class='card'/><rect x='560' y='330' width='280' height='50' rx='2' class='head'/><rect x='560' y='378' width='280' height='3' class='head'/>
+      <text x='582' y='363' class='title'>transcripts</text><text x='820' y='363' class='schema'>core</text>
+      <text x='582' y='408' class='name'>id</text><text x='820' y='408' class='type'>text pk</text>
+      <text x='582' y='436' class='name'>gene_id</text><text x='820' y='436' class='type'>text fk</text>
+      <text x='582' y='464' class='name'>canonical_accession</text><text x='820' y='464' class='type'>text</text>
+      <text x='582' y='492' class='name'>sequence_scope</text><text x='820' y='492' class='type'>text</text>
+      <text x='582' y='520' class='name'>genome_build</text><text x='820' y='520' class='type'>text</text>
+      <text x='582' y='548' class='name'>tx_start</text><text x='820' y='548' class='type'>bigint</text>
+      <text x='582' y='576' class='name'>tx_end</text><text x='820' y='576' class='type'>bigint</text>
+    </g>
 
-  <rect x="430" y="310" width="230" height="185" class="group"/>
-  <text x="455" y="342" class="groupText">Transcript-Level</text>
-  <rect x="465" y="365" width="160" height="58" class="middle"/>
-  <text x="545" y="394" class="nodeText">transcripts</text>
-  <rect x="452" y="440" width="186" height="58" class="middle"/>
-  <text x="545" y="462" class="nodeText">transcript</text>
-  <text x="545" y="482" class="nodeText">feature tracks</text>
+    <g id='core-tracks'>
+      <rect x='960' y='90' width='280' height='240' rx='2' class='card'/><rect x='960' y='90' width='280' height='50' rx='2' class='head'/><rect x='960' y='138' width='280' height='3' class='head'/>
+      <text x='982' y='123' class='title'>transcript_feature_tracks</text><text x='1220' y='123' class='schema'>core</text>
+      <text x='982' y='168' class='name'>id</text><text x='1220' y='168' class='type'>text pk</text>
+      <text x='982' y='196' class='name'>transcript_id</text><text x='1220' y='196' class='type'>text fk</text>
+      <text x='982' y='224' class='name'>track_name</text><text x='1220' y='224' class='type'>text</text>
+      <text x='982' y='252' class='name'>kind</text><text x='1220' y='252' class='type'>text</text>
+      <text x='982' y='280' class='name'>count</text><text x='1220' y='280' class='type'>int</text>
+      <text x='982' y='308' class='name'>run_id</text><text x='1220' y='308' class='type'>text fk</text>
+    </g>
 
-  <rect x="690" y="310" width="260" height="260" class="group"/>
-  <text x="715" y="342" class="groupText">Read / MRE-Level</text>
-  <rect x="728" y="365" width="184" height="58" class="middle"/>
-  <text x="820" y="394" class="nodeText">site_observations</text>
-  <rect x="715" y="448" width="210" height="58" class="middle"/>
-  <text x="820" y="470" class="nodeText">site_transcript</text>
-  <text x="820" y="490" class="nodeText">overlaps</text>
-  <rect x="750" y="530" width="140" height="58" class="middle"/>
-  <text x="820" y="559" class="nodeText">mre_sites</text>
+    <g id='evidence-experiments'>
+      <rect x='960' y='360' width='280' height='240' rx='2' class='card'/><rect x='960' y='360' width='280' height='50' rx='2' class='head'/><rect x='960' y='408' width='280' height='3' class='head'/>
+      <text x='982' y='393' class='title'>experiments</text><text x='1220' y='393' class='schema'>evidence</text>
+      <text x='982' y='438' class='name'>id</text><text x='1220' y='438' class='type'>text pk</text>
+      <text x='982' y='466' class='name'>dataset_id</text><text x='1220' y='466' class='type'>text</text>
+      <text x='982' y='494' class='name'>mirna_id</text><text x='1220' y='494' class='type'>text fk</text>
+      <text x='982' y='522' class='name'>organism</text><text x='1220' y='522' class='type'>text</text>
+      <text x='982' y='550' class='name'>experiment_type</text><text x='1220' y='550' class='type'>text</text>
+      <text x='982' y='578' class='name'>run_id</text><text x='1220' y='578' class='type'>text fk</text>
+    </g>
 
-  <rect x="980" y="310" width="190" height="185" class="group"/>
-  <text x="1005" y="342" class="groupText">Nucleotide-Level</text>
-  <rect x="1003" y="385" width="144" height="70" class="middle"/>
-  <text x="1075" y="412" class="nodeText">nucleotide</text>
-  <text x="1075" y="434" class="nodeText">profiles</text>
+    <g id='evidence-effects'>
+      <rect x='1350' y='90' width='280' height='268' rx='2' class='card'/><rect x='1350' y='90' width='280' height='50' rx='2' class='head'/><rect x='1350' y='138' width='280' height='3' class='head'/>
+      <text x='1372' y='123' class='title'>experiment_gene_effects</text><text x='1610' y='123' class='schema'>evidence</text>
+      <text x='1372' y='168' class='name'>id</text><text x='1610' y='168' class='type'>text pk</text>
+      <text x='1372' y='196' class='name'>experiment_id</text><text x='1610' y='196' class='type'>text fk</text>
+      <text x='1372' y='224' class='name'>pair_id</text><text x='1610' y='224' class='type'>text fk</text>
+      <text x='1372' y='252' class='name'>mirna_id</text><text x='1610' y='252' class='type'>text fk</text>
+      <text x='1372' y='280' class='name'>gene_id</text><text x='1610' y='280' class='type'>text fk</text>
+      <text x='1372' y='308' class='name'>fdr</text><text x='1610' y='308' class='type'>double</text>
+      <text x='1372' y='336' class='name'>run_id</text><text x='1610' y='336' class='type'>text fk</text>
+    </g>
 
-  <rect x="420" y="610" width="745" height="95" class="group"/>
-  <text x="445" y="642" class="groupText">Gene-Level Evidence</text>
-  <rect x="650" y="655" width="122" height="40" class="evidence"/>
-  <text x="711" y="675" class="nodeText">experiments</text>
-  <rect x="790" y="655" width="194" height="40" class="evidence"/>
-  <text x="887" y="675" class="nodeText">experiment effects</text>
-  <rect x="440" y="655" width="122" height="40" class="evidence"/>
-  <text x="501" y="675" class="nodeText">predictors</text>
-  <rect x="1000" y="655" width="145" height="40" class="evidence"/>
-  <text x="1073" y="675" class="nodeText">predictor scores</text>
+    <g id='evidence-predictors'>
+      <rect x='1350' y='390' width='280' height='212' rx='2' class='card'/><rect x='1350' y='390' width='280' height='50' rx='2' class='head'/><rect x='1350' y='438' width='280' height='3' class='head'/>
+      <text x='1372' y='423' class='title'>predictors</text><text x='1610' y='423' class='schema'>evidence</text>
+      <text x='1372' y='468' class='name'>id</text><text x='1610' y='468' class='type'>text pk</text>
+      <text x='1372' y='496' class='name'>tool_id</text><text x='1610' y='496' class='type'>text</text>
+      <text x='1372' y='524' class='name'>official_name</text><text x='1610' y='524' class='type'>text</text>
+      <text x='1372' y='552' class='name'>score_type</text><text x='1610' y='552' class='type'>text</text>
+      <text x='1372' y='580' class='name'>score_direction</text><text x='1610' y='580' class='type'>text</text>
+    </g>
 
-  <rect x="155" y="770" width="565" height="110" class="group"/>
-  <text x="180" y="802" class="groupText">Literature Schema</text>
-  <rect x="190" y="825" width="155" height="42" class="support"/>
-  <text x="268" y="846" class="nodeText">documents</text>
-  <rect x="370" y="825" width="145" height="42" class="support"/>
-  <text x="443" y="846" class="nodeText">mentions</text>
-  <rect x="540" y="825" width="145" height="42" class="support"/>
-  <text x="613" y="846" class="nodeText">assertions</text>
+    <g id='evidence-scores'>
+      <rect x='1350' y='630' width='280' height='268' rx='2' class='card'/><rect x='1350' y='630' width='280' height='50' rx='2' class='head'/><rect x='1350' y='678' width='280' height='3' class='head'/>
+      <text x='1372' y='663' class='title'>predictor_scores</text><text x='1610' y='663' class='schema'>evidence</text>
+      <text x='1372' y='708' class='name'>id</text><text x='1610' y='708' class='type'>text pk</text>
+      <text x='1372' y='736' class='name'>predictor_id</text><text x='1610' y='736' class='type'>text fk</text>
+      <text x='1372' y='764' class='name'>pair_id</text><text x='1610' y='764' class='type'>text fk</text>
+      <text x='1372' y='792' class='name'>mirna_id</text><text x='1610' y='792' class='type'>text fk</text>
+      <text x='1372' y='820' class='name'>gene_id</text><text x='1610' y='820' class='type'>text fk</text>
+      <text x='1372' y='848' class='name'>score_raw</text><text x='1610' y='848' class='type'>double</text>
+      <text x='1372' y='876' class='name'>run_id</text><text x='1610' y='876' class='type'>text fk</text>
+    </g>
 
-  <rect x="890" y="770" width="360" height="110" class="group"/>
-  <text x="915" y="802" class="groupText">Provenance Schema</text>
-  <rect x="985" y="825" width="170" height="42" class="support"/>
-  <text x="1070" y="846" class="nodeText">ingestion_runs</text>
+    <g id='site-observations'>
+      <rect x='685' y='635' width='280' height='268' rx='2' class='card'/><rect x='685' y='635' width='280' height='50' rx='2' class='head'/><rect x='685' y='683' width='280' height='3' class='head'/>
+      <text x='707' y='668' class='title'>site_observations</text><text x='945' y='668' class='schema'>evidence</text>
+      <text x='707' y='713' class='name'>id</text><text x='945' y='713' class='type'>text pk</text>
+      <text x='707' y='741' class='name'>source_dataset</text><text x='945' y='741' class='type'>text</text>
+      <text x='707' y='769' class='name'>mirna_id</text><text x='945' y='769' class='type'>text fk</text>
+      <text x='707' y='797' class='name'>chr</text><text x='945' y='797' class='type'>text</text>
+      <text x='707' y='825' class='name'>start_pos</text><text x='945' y='825' class='type'>bigint</text>
+      <text x='707' y='853' class='name'>end_pos</text><text x='945' y='853' class='type'>bigint</text>
+      <text x='707' y='881' class='name'>run_id</text><text x='945' y='881' class='type'>text fk</text>
+    </g>
 
-  <path d="M292 256 C410 256, 520 233, 684 233" class="arrow"/>
-  <path d="M1308 256 C1190 256, 1080 233, 916 233" class="arrow"/>
-  <path d="M1413 292 C1413 405, 1260 394, 625 394" class="arrowSoft"/>
-  <path d="M545 423 L545 440" class="arrowSoft"/>
-  <path d="M545 394 C615 394, 660 394, 728 394" class="arrowSoft"/>
-  <path d="M820 423 L820 448" class="arrowSoft"/>
-  <path d="M820 506 L820 530" class="arrowSoft"/>
-  <path d="M800 271 C800 340, 800 445, 800 530" class="arrow"/>
-  <path d="M890 559 C970 559, 1005 495, 1055 455" class="arrowSoft"/>
-  <path d="M820 588 C855 625, 856 655, 887 655" class="arrowSoft"/>
-  <path d="M912 394 C950 394, 975 405, 1003 420" class="arrowSoft"/>
-  <path d="M625 394 C780 360, 940 365, 1050 385" class="arrowSoft"/>
-  <path d="M711 655 L790 675" class="arrowSoft"/>
-  <path d="M562 675 L1000 675" class="arrowSoft"/>
-  <path d="M887 655 C870 530, 845 360, 800 271" class="arrowSoft"/>
-  <path d="M1073 655 C990 530, 910 360, 800 271" class="arrowSoft"/>
-  <path d="M345 846 L370 846" class="arrowSoft"/>
-  <path d="M515 846 L540 846" class="arrowSoft"/>
-  <path d="M613 825 C610 665, 600 420, 292 292" class="arrowSoft"/>
-  <path d="M685 846 C865 735, 1135 430, 1308 292" class="arrowSoft"/>
-  <path d="M1070 825 C1070 760, 1080 720, 1073 695" class="arrowSoft dashed"/>
-  <path d="M1070 825 C955 760, 840 715, 820 588" class="arrowSoft dashed"/>
-  <path d="M1070 825 C850 790, 665 730, 545 498" class="arrowSoft dashed"/>
+    <g id='mres'>
+      <rect x='70' y='700' width='280' height='268' rx='2' class='card'/><rect x='70' y='700' width='280' height='50' rx='2' class='head'/><rect x='70' y='748' width='280' height='3' class='head'/>
+      <text x='92' y='733' class='title'>mirna_recognition_elements</text><text x='330' y='733' class='schema'>evidence</text>
+      <text x='92' y='778' class='name'>id</text><text x='330' y='778' class='type'>text pk</text>
+      <text x='92' y='806' class='name'>source_dataset</text><text x='330' y='806' class='type'>text</text>
+      <text x='92' y='834' class='name'>source_split</text><text x='330' y='834' class='type'>text</text>
+      <text x='92' y='862' class='name'>mirna_id</text><text x='330' y='862' class='type'>text fk</text>
+      <text x='92' y='890' class='name'>gene_id</text><text x='330' y='890' class='type'>text fk</text>
+      <text x='92' y='918' class='name'>label</text><text x='330' y='918' class='type'>int</text>
+      <text x='92' y='946' class='name'>run_id</text><text x='330' y='946' class='type'>text fk</text>
+    </g>
 
-  <text x="487" y="239" class="label">miRNA anchor</text>
-  <text x="1110" y="239" class="label">gene anchor</text>
-  <text x="1260" y="390" class="label">gene to transcripts</text>
-  <text x="1050" y="745" class="label">run provenance</text>
+    <g id='overlaps'>
+      <rect x='960' y='650' width='280' height='268' rx='2' class='card'/><rect x='960' y='650' width='280' height='50' rx='2' class='head'/><rect x='960' y='698' width='280' height='3' class='head'/>
+      <text x='982' y='683' class='title'>site_transcript_overlaps</text><text x='1220' y='683' class='schema'>evidence</text>
+      <text x='982' y='728' class='name'>id</text><text x='1220' y='728' class='type'>text pk</text>
+      <text x='982' y='756' class='name'>observation_id</text><text x='1220' y='756' class='type'>text fk</text>
+      <text x='982' y='784' class='name'>transcript_id</text><text x='1220' y='784' class='type'>text fk</text>
+      <text x='982' y='812' class='name'>gene_id</text><text x='1220' y='812' class='type'>text fk</text>
+      <text x='982' y='840' class='name'>overlap_cds_bp</text><text x='1220' y='840' class='type'>int</text>
+      <text x='982' y='868' class='name'>overlap_utr3_bp</text><text x='1220' y='868' class='type'>int</text>
+      <text x='982' y='896' class='name'>run_id</text><text x='1220' y='896' class='type'>text fk</text>
+    </g>
+
+    <g id='mre-sites'>
+      <rect x='960' y='960' width='280' height='296' rx='2' class='card'/><rect x='960' y='960' width='280' height='50' rx='2' class='head'/><rect x='960' y='1008' width='280' height='3' class='head'/>
+      <text x='982' y='993' class='title'>mre_sites</text><text x='1220' y='993' class='schema'>evidence</text>
+      <text x='982' y='1038' class='name'>id</text><text x='1220' y='1038' class='type'>text pk</text>
+      <text x='982' y='1066' class='name'>pair_id</text><text x='1220' y='1066' class='type'>text fk</text>
+      <text x='982' y='1094' class='name'>mirna_id</text><text x='1220' y='1094' class='type'>text fk</text>
+      <text x='982' y='1122' class='name'>gene_id</text><text x='1220' y='1122' class='type'>text fk</text>
+      <text x='982' y='1150' class='name'>transcript_id</text><text x='1220' y='1150' class='type'>text fk</text>
+      <text x='982' y='1178' class='name'>observation_id</text><text x='1220' y='1178' class='type'>text fk</text>
+      <text x='982' y='1206' class='name'>dominant_region</text><text x='1220' y='1206' class='type'>text</text>
+      <text x='982' y='1234' class='name'>run_id</text><text x='1220' y='1234' class='type'>text fk</text>
+    </g>
+
+    <g id='profiles'>
+      <rect x='1350' y='920' width='280' height='268' rx='2' class='card'/><rect x='1350' y='920' width='280' height='50' rx='2' class='head'/><rect x='1350' y='968' width='280' height='3' class='head'/>
+      <text x='1372' y='953' class='title'>nucleotide_profiles</text><text x='1610' y='953' class='schema'>evidence</text>
+      <text x='1372' y='998' class='name'>id</text><text x='1610' y='998' class='type'>text pk</text>
+      <text x='1372' y='1026' class='name'>entity_type</text><text x='1610' y='1026' class='type'>text</text>
+      <text x='1372' y='1054' class='name'>entity_id</text><text x='1610' y='1054' class='type'>text</text>
+      <text x='1372' y='1082' class='name'>profile_type</text><text x='1610' y='1082' class='type'>text</text>
+      <text x='1372' y='1110' class='name'>length</text><text x='1610' y='1110' class='type'>int</text>
+      <text x='1372' y='1138' class='name'>values_json</text><text x='1610' y='1138' class='type'>jsonb</text>
+      <text x='1372' y='1166' class='name'>run_id</text><text x='1610' y='1166' class='type'>text fk</text>
+    </g>
+
+    <g id='lit-docs'>
+      <rect x='1510' y='90' width='280' height='240' rx='2' class='card'/><rect x='1510' y='90' width='280' height='50' rx='2' class='head'/><rect x='1510' y='138' width='280' height='3' class='head'/>
+      <text x='1532' y='123' class='title'>literature_documents</text><text x='1770' y='123' class='schema'>literature</text>
+      <text x='1532' y='168' class='name'>id</text><text x='1770' y='168' class='type'>text pk</text>
+      <text x='1532' y='196' class='name'>document_id</text><text x='1770' y='196' class='type'>text</text>
+      <text x='1532' y='224' class='name'>pmid</text><text x='1770' y='224' class='type'>text</text>
+      <text x='1532' y='252' class='name'>title</text><text x='1770' y='252' class='type'>text</text>
+      <text x='1532' y='280' class='name'>source</text><text x='1770' y='280' class='type'>text</text>
+      <text x='1532' y='308' class='name'>run_id</text><text x='1770' y='308' class='type'>text fk</text>
+    </g>
+
+    <g id='lit-mentions'>
+      <rect x='1510' y='370' width='280' height='268' rx='2' class='card'/><rect x='1510' y='370' width='280' height='50' rx='2' class='head'/><rect x='1510' y='418' width='280' height='3' class='head'/>
+      <text x='1532' y='403' class='title'>literature_mentions</text><text x='1770' y='403' class='schema'>literature</text>
+      <text x='1532' y='448' class='name'>id</text><text x='1770' y='448' class='type'>text pk</text>
+      <text x='1532' y='476' class='name'>document_id</text><text x='1770' y='476' class='type'>text fk</text>
+      <text x='1532' y='504' class='name'>annotation_id</text><text x='1770' y='504' class='type'>text</text>
+      <text x='1532' y='532' class='name'>entity_type</text><text x='1770' y='532' class='type'>text</text>
+      <text x='1532' y='560' class='name'>resolved_mirna_id</text><text x='1770' y='560' class='type'>text fk</text>
+      <text x='1532' y='588' class='name'>resolved_gene_id</text><text x='1770' y='588' class='type'>text fk</text>
+      <text x='1532' y='616' class='name'>run_id</text><text x='1770' y='616' class='type'>text fk</text>
+    </g>
+
+    <g id='lit-assertions'>
+      <rect x='1510' y='680' width='280' height='268' rx='2' class='card'/><rect x='1510' y='680' width='280' height='50' rx='2' class='head'/><rect x='1510' y='728' width='280' height='3' class='head'/>
+      <text x='1532' y='713' class='title'>literature_assertions</text><text x='1770' y='713' class='schema'>literature</text>
+      <text x='1532' y='758' class='name'>id</text><text x='1770' y='758' class='type'>text pk</text>
+      <text x='1532' y='786' class='name'>document_id</text><text x='1770' y='786' class='type'>text fk</text>
+      <text x='1532' y='814' class='name'>mirna_id</text><text x='1770' y='814' class='type'>text fk</text>
+      <text x='1532' y='842' class='name'>gene_id</text><text x='1770' y='842' class='type'>text fk</text>
+      <text x='1532' y='870' class='name'>assertion_type</text><text x='1770' y='870' class='type'>text</text>
+      <text x='1532' y='898' class='name'>curation_status</text><text x='1770' y='898' class='type'>text</text>
+      <text x='1532' y='926' class='name'>run_id</text><text x='1770' y='926' class='type'>text fk</text>
+    </g>
+
+    <g id='runs'>
+      <rect x='680' y='1152' width='360' height='100' rx='2' class='card'/><rect x='680' y='1152' width='360' height='50' rx='2' class='head'/><rect x='680' y='1200' width='360' height='3' class='head'/>
+      <text x='702' y='1185' class='title'>ingestion_runs</text><text x='1020' y='1185' class='schema'>provenance</text>
+      <text x='702' y='1230' class='name'>id, source_repo, source_path, row_counts</text><text x='1020' y='1230' class='type'>text/jsonb</text>
+    </g>
+  </g>
 </svg>
