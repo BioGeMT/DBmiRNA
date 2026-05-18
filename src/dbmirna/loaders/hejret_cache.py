@@ -15,13 +15,10 @@ from dbmirna.utils import (
 )
 
 
-DEFAULT_CACHE_ROOT = Path("/homes/ezach01/.miRBench/datasets/14501607/AGO2_CLASH_Hejret2023")
-
-
 def export_hejret_cache(
     *,
     out_dir: str | Path,
-    cache_root: str | Path = DEFAULT_CACHE_ROOT,
+    cache_root: str | Path,
     splits: list[str] | None = None,
     max_rows_per_split: int | None = None,
 ) -> dict:
