@@ -7,11 +7,36 @@ from pathlib import Path
 from .registry import load_schema_bundle
 
 
+RUN_ID_COLLECTIONS = (
+    "transcript_feature_tracks",
+    "experiments",
+    "experiment_gene_effects",
+    "predictor_scores",
+    "site_observations",
+    "mirna_recognition_elements",
+    "site_transcript_overlaps",
+    "mre_sites",
+    "nucleotide_profiles",
+    "literature_documents",
+    "literature_mentions",
+    "literature_assertions",
+)
+
+
 def validate_output_bundle(out_dir: str | Path) -> list[str]:
     out_dir = Path(out_dir)
     errors: list[str] = []
     schema_bundle = load_schema_bundle()
     defs = schema_bundle.get("$defs", {})
+
+    if not out_dir.exists():
+        return [f"Output directory does not exist: {out_dir}."]
+    if not out_dir.is_dir():
+        return [f"Output path is not a directory: {out_dir}."]
+
+    jsonl_paths = sorted(out_dir.glob("*.jsonl"))
+    if not jsonl_paths:
+        errors.append(f"{out_dir}: no JSONL collection files found.")
 
     try:
         import jsonschema
@@ -20,8 +45,9 @@ def validate_output_bundle(out_dir: str | Path) -> list[str]:
         errors.append("Install jsonschema to enable JSON Schema validation.")
 
     records_by_collection: dict[str, dict[str, dict]] = defaultdict(dict)
+    record_counts_by_collection: dict[str, int] = defaultdict(int)
 
-    for path in sorted(out_dir.glob("*.jsonl")):
+    for path in jsonl_paths:
         collection = path.stem
         if collection not in defs:
             errors.append(f"{path.name} does not match a known collection schema.")
@@ -35,6 +61,7 @@ def validate_output_bundle(out_dir: str | Path) -> list[str]:
 
         with path.open("r", encoding="utf-8") as handle:
             for line_number, line in enumerate(handle, start=1):
+                record_counts_by_collection[collection] += 1
                 try:
                     record = json.loads(line)
                 except json.JSONDecodeError as exc:
@@ -57,7 +84,28 @@ def validate_output_bundle(out_dir: str | Path) -> list[str]:
                         )
                         break
 
+        if record_counts_by_collection[collection] == 0:
+            errors.append(f"{path.name}: collection file is empty.")
+
+    errors.extend(_validate_bundle_completeness(records_by_collection))
     errors.extend(_validate_relationships(records_by_collection))
+    return errors
+
+
+def _validate_bundle_completeness(records_by_collection: dict[str, dict[str, dict]]) -> list[str]:
+    errors: list[str] = []
+    present_collections = {collection for collection, records in records_by_collection.items() if records}
+    data_collections = present_collections - {"ingestion_runs"}
+
+    if not data_collections:
+        errors.append("Output bundle contains no data collections beyond ingestion_runs.")
+
+    collections_with_run_ids = present_collections.intersection(RUN_ID_COLLECTIONS)
+    if collections_with_run_ids and "ingestion_runs" not in present_collections:
+        errors.append(
+            "Output bundle contains run-scoped records but is missing ingestion_runs.jsonl."
+        )
+
     return errors
 
 
@@ -74,6 +122,10 @@ def _validate_relationships(records_by_collection: dict[str, dict[str, dict]]) -
                 f"{collection}:{record.get('_id')}: {field} references missing "
                 f"{target_collection} record {target_id!r}."
             )
+
+    for collection in RUN_ID_COLLECTIONS:
+        for record in records_by_collection.get(collection, {}).values():
+            require(collection, record, "run_id", "ingestion_runs")
 
     for collection in ("mirna_gene_pairs", "experiment_gene_effects", "predictor_scores", "mre_sites"):
         for record in records_by_collection.get(collection, {}).values():
