@@ -199,6 +199,21 @@ CREATE TABLE IF NOT EXISTS evidence.mirna_recognition_elements (
   run_id text NOT NULL REFERENCES provenance.ingestion_runs(id)
 );
 
+CREATE TABLE IF NOT EXISTS evidence.mre_predictor_scores (
+  id text PRIMARY KEY,
+  predictor_id text NOT NULL REFERENCES evidence.predictors(id),
+  mre_id text NOT NULL REFERENCES evidence.mirna_recognition_elements(id),
+  mirna_id text NOT NULL REFERENCES core.mirnas(id),
+  gene_id text REFERENCES core.genes(id),
+  score_raw double precision NOT NULL,
+  score_direction text NOT NULL,
+  score_rank_within_mre integer,
+  label integer,
+  source_dataset text,
+  source_row jsonb NOT NULL DEFAULT '{}'::jsonb,
+  run_id text NOT NULL REFERENCES provenance.ingestion_runs(id)
+);
+
 CREATE TABLE IF NOT EXISTS evidence.site_transcript_overlaps (
   id text PRIMARY KEY,
   observation_id text NOT NULL REFERENCES evidence.site_observations(id),
@@ -319,6 +334,9 @@ CREATE INDEX IF NOT EXISTS pairs_mirna_idx ON core.mirna_gene_pairs (mirna_id);
 CREATE INDEX IF NOT EXISTS pairs_gene_idx ON core.mirna_gene_pairs (gene_id);
 CREATE INDEX IF NOT EXISTS effects_pair_idx ON evidence.experiment_gene_effects (pair_id);
 CREATE INDEX IF NOT EXISTS scores_pair_idx ON evidence.predictor_scores (pair_id);
+CREATE INDEX IF NOT EXISTS mre_scores_mre_idx ON evidence.mre_predictor_scores (mre_id);
+CREATE INDEX IF NOT EXISTS mre_scores_predictor_idx ON evidence.mre_predictor_scores (predictor_id);
+CREATE INDEX IF NOT EXISTS mre_scores_mirna_idx ON evidence.mre_predictor_scores (mirna_id);
 CREATE INDEX IF NOT EXISTS observations_locus_idx ON evidence.site_observations (chr, start_pos, end_pos);
 CREATE INDEX IF NOT EXISTS mre_reads_dataset_split_idx ON evidence.mirna_recognition_elements (source_dataset, source_split);
 CREATE INDEX IF NOT EXISTS mre_reads_mirna_idx ON evidence.mirna_recognition_elements (mirna_id);
