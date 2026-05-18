@@ -209,6 +209,7 @@ def _validate_relationships(records_by_collection: dict[str, dict[str, dict]]) -
         entity_id = record.get("entity_id")
         target_collection = {
             "site_observation": "site_observations",
+            "mre": "mirna_recognition_elements",
             "mre_site": "mre_sites",
             "transcript": "transcripts",
         }.get(entity_type)
