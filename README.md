@@ -81,7 +81,15 @@ PYTHONPATH=src python -m dbmirna validate-outputs \
   --out-dir outputs/gra_sample
 ```
 
-Output validation checks JSON schema conformance, duplicate primary keys, required bundle contents, `run_id` references to ingestion runs, and core references between collections.
+Use strict bundle validation when you want to confirm that a bundle is loadable as data, not just structurally valid:
+
+```bash
+PYTHONPATH=src python -m dbmirna validate-outputs \
+  --out-dir outputs/gra_sample \
+  --require-data-collection
+```
+
+Output validation checks JSON schema conformance, duplicate primary keys, known collection names, empty collection files, `run_id` references to ingestion runs, and core references between collections. Strict validation also requires at least one non-provenance data collection.
 
 ## Export JSONL Bundles
 
@@ -124,7 +132,7 @@ PYTHONPATH=src python -m dbmirna load-postgres \
   --dsn "$DBMIRNA_DSN"
 ```
 
-The loader validates the bundle first, then upserts records in dependency order.
+The loader applies strict bundle validation first, then upserts records in dependency order.
 
 ## Useful Commands
 
