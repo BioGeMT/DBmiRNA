@@ -21,6 +21,7 @@ LOAD_ORDER = [
     "predictor_scores",
     "site_observations",
     "mirna_recognition_elements",
+    "mre_predictor_scores",
     "site_transcript_overlaps",
     "mre_sites",
     "nucleotide_profiles",
@@ -123,6 +124,13 @@ TABLES: dict[str, tuple[str, str, dict[str, str]]] = {
         "end": "end_pos", "strand": "strand", "read_len": "read_len",
         "experiment_type": "experiment_type", "organism": "organism",
         "raw_row": "raw_row", "run_id": "run_id",
+    }),
+    "mre_predictor_scores": ("evidence", "mre_predictor_scores", {
+        "_id": "id", "predictor_id": "predictor_id", "mre_id": "mre_id",
+        "mirna_id": "mirna_id", "gene_id": "gene_id", "score_raw": "score_raw",
+        "score_direction": "score_direction", "score_rank_within_mre": "score_rank_within_mre",
+        "label": "label", "source_dataset": "source_dataset", "source_row": "source_row",
+        "run_id": "run_id",
     }),
     "site_transcript_overlaps": ("evidence", "site_transcript_overlaps", {
         "_id": "id", "observation_id": "observation_id", "transcript_id": "transcript_id",
