@@ -23,7 +23,11 @@ RUN_ID_COLLECTIONS = (
 )
 
 
-def validate_output_bundle(out_dir: str | Path) -> list[str]:
+def validate_output_bundle(
+    out_dir: str | Path,
+    *,
+    require_data_collection: bool = False,
+) -> list[str]:
     out_dir = Path(out_dir)
     errors: list[str] = []
     schema_bundle = load_schema_bundle()
@@ -87,17 +91,26 @@ def validate_output_bundle(out_dir: str | Path) -> list[str]:
         if record_counts_by_collection[collection] == 0:
             errors.append(f"{path.name}: collection file is empty.")
 
-    errors.extend(_validate_bundle_completeness(records_by_collection))
+    errors.extend(
+        _validate_bundle_completeness(
+            records_by_collection,
+            require_data_collection=require_data_collection,
+        )
+    )
     errors.extend(_validate_relationships(records_by_collection))
     return errors
 
 
-def _validate_bundle_completeness(records_by_collection: dict[str, dict[str, dict]]) -> list[str]:
+def _validate_bundle_completeness(
+    records_by_collection: dict[str, dict[str, dict]],
+    *,
+    require_data_collection: bool,
+) -> list[str]:
     errors: list[str] = []
     present_collections = {collection for collection, records in records_by_collection.items() if records}
     data_collections = present_collections - {"ingestion_runs"}
 
-    if not data_collections:
+    if require_data_collection and not data_collections:
         errors.append("Output bundle contains no data collections beyond ingestion_runs.")
 
     collections_with_run_ids = present_collections.intersection(RUN_ID_COLLECTIONS)
@@ -115,9 +128,22 @@ def _validate_relationships(records_by_collection: dict[str, dict[str, dict]]) -
     def has(collection: str, record_id: str | None) -> bool:
         return bool(record_id) and record_id in records_by_collection.get(collection, {})
 
-    def require(collection: str, record: dict, field: str, target_collection: str) -> None:
+    def require(
+        collection: str,
+        record: dict,
+        field: str,
+        target_collection: str,
+        *,
+        required: bool = False,
+    ) -> None:
         target_id = record.get(field)
-        if target_id and not has(target_collection, target_id):
+        if not target_id:
+            if required:
+                errors.append(
+                    f"{collection}:{record.get('_id')}: missing required reference field {field}."
+                )
+            return
+        if not has(target_collection, target_id):
             errors.append(
                 f"{collection}:{record.get('_id')}: {field} references missing "
                 f"{target_collection} record {target_id!r}."
@@ -125,37 +151,37 @@ def _validate_relationships(records_by_collection: dict[str, dict[str, dict]]) -
 
     for collection in RUN_ID_COLLECTIONS:
         for record in records_by_collection.get(collection, {}).values():
-            require(collection, record, "run_id", "ingestion_runs")
+            require(collection, record, "run_id", "ingestion_runs", required=True)
 
     for collection in ("mirna_gene_pairs", "experiment_gene_effects", "predictor_scores", "mre_sites"):
         for record in records_by_collection.get(collection, {}).values():
-            require(collection, record, "mirna_id", "mirnas")
-            require(collection, record, "gene_id", "genes")
+            require(collection, record, "mirna_id", "mirnas", required=True)
+            require(collection, record, "gene_id", "genes", required=True)
 
     for record in records_by_collection.get("transcripts", {}).values():
-        require("transcripts", record, "gene_id", "genes")
+        require("transcripts", record, "gene_id", "genes", required=True)
 
     for record in records_by_collection.get("experiment_gene_effects", {}).values():
-        require("experiment_gene_effects", record, "experiment_id", "experiments")
-        require("experiment_gene_effects", record, "pair_id", "mirna_gene_pairs")
+        require("experiment_gene_effects", record, "experiment_id", "experiments", required=True)
+        require("experiment_gene_effects", record, "pair_id", "mirna_gene_pairs", required=True)
 
     for record in records_by_collection.get("predictor_scores", {}).values():
-        require("predictor_scores", record, "predictor_id", "predictors")
-        require("predictor_scores", record, "pair_id", "mirna_gene_pairs")
+        require("predictor_scores", record, "predictor_id", "predictors", required=True)
+        require("predictor_scores", record, "pair_id", "mirna_gene_pairs", required=True)
 
     for record in records_by_collection.get("mirna_recognition_elements", {}).values():
-        require("mirna_recognition_elements", record, "mirna_id", "mirnas")
+        require("mirna_recognition_elements", record, "mirna_id", "mirnas", required=True)
         require("mirna_recognition_elements", record, "gene_id", "genes")
 
     for record in records_by_collection.get("site_transcript_overlaps", {}).values():
-        require("site_transcript_overlaps", record, "observation_id", "site_observations")
-        require("site_transcript_overlaps", record, "transcript_id", "transcripts")
-        require("site_transcript_overlaps", record, "gene_id", "genes")
+        require("site_transcript_overlaps", record, "observation_id", "site_observations", required=True)
+        require("site_transcript_overlaps", record, "transcript_id", "transcripts", required=True)
+        require("site_transcript_overlaps", record, "gene_id", "genes", required=True)
 
     for record in records_by_collection.get("mre_sites", {}).values():
-        require("mre_sites", record, "transcript_id", "transcripts")
-        require("mre_sites", record, "observation_id", "site_observations")
-        require("mre_sites", record, "pair_id", "mirna_gene_pairs")
+        require("mre_sites", record, "transcript_id", "transcripts", required=True)
+        require("mre_sites", record, "observation_id", "site_observations", required=True)
+        require("mre_sites", record, "pair_id", "mirna_gene_pairs", required=True)
 
     for record in records_by_collection.get("nucleotide_profiles", {}).values():
         entity_type = record.get("entity_type")
