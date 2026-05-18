@@ -23,6 +23,10 @@ RUN_ID_COLLECTIONS = (
     "literature_assertions",
 )
 
+EXTRA_COLLECTIONS_WITH_RELATIONSHIP_VALIDATION = {
+    "mre_predictor_scores",
+}
+
 
 def validate_output_bundle(
     out_dir: str | Path,
@@ -54,12 +58,13 @@ def validate_output_bundle(
 
     for path in jsonl_paths:
         collection = path.stem
-        if collection not in defs:
+        has_schema = collection in defs
+        if not has_schema and collection not in EXTRA_COLLECTIONS_WITH_RELATIONSHIP_VALIDATION:
             errors.append(f"{path.name} does not match a known collection schema.")
             continue
 
         validator = None
-        if jsonschema is not None:
+        if has_schema and jsonschema is not None:
             validator = jsonschema.Draft202012Validator(
                 {"$ref": f"#/$defs/{collection}", "$defs": defs}
             )
