@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biogemt.internal/dbmirna/mre_predictor_scores.schema.json",
+  "title": "DBmiRNA MRE-level Predictor Score Collection Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "_id",
+    "predictor_id",
+    "mre_id",
+    "mirna_id",
+    "score_raw",
+    "score_direction",
+    "source_row",
+    "run_id"
+  ],
+  "properties": {
+    "_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "predictor_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "mre_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "mirna_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "gene_id": {
+      "$ref": "#/$defs/stringOrNull"
+    },
+    "score_raw": {
+      "type": "number"
+    },
+    "score_direction": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "score_rank_within_mre": {
+      "$ref": "#/$defs/integerOrNull"
+    },
+    "label": {
+      "$ref": "#/$defs/integerOrNull"
+    },
+    "source_dataset": {
+      "$ref": "#/$defs/stringOrNull"
+    },
+    "source_row": {
+      "$ref": "#/$defs/freeObject"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    }
+  }
+}
