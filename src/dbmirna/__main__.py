@@ -23,6 +23,11 @@ def main() -> int:
 
     validate_outputs_parser = subparsers.add_parser("validate-outputs", help="Validate an exported JSONL bundle.")
     validate_outputs_parser.add_argument("--out-dir", required=True, help="Output bundle directory to validate.")
+    validate_outputs_parser.add_argument(
+        "--require-data-collection",
+        action="store_true",
+        help="Fail unless the bundle contains at least one non-provenance collection.",
+    )
 
     init_pg_parser = subparsers.add_parser("init-postgres", help="Create DBmiRNA PostgreSQL schemas and tables.")
     init_pg_parser.add_argument("--dsn", required=True, help="PostgreSQL connection string.")
@@ -72,7 +77,10 @@ def main() -> int:
         return 0
 
     if command == "validate-outputs":
-        errors = validate_output_bundle(args.out_dir)
+        errors = validate_output_bundle(
+            args.out_dir,
+            require_data_collection=args.require_data_collection,
+        )
         if errors:
             print("DBmiRNA output validation failed:")
             for error in errors:
@@ -87,7 +95,7 @@ def main() -> int:
         return 0
 
     if command == "load-postgres":
-        errors = validate_output_bundle(args.out_dir)
+        errors = validate_output_bundle(args.out_dir, require_data_collection=True)
         if errors:
             print("DBmiRNA output validation failed:")
             for error in errors:
