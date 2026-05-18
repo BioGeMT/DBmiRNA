@@ -1,0 +1,77 @@
+flowchart LR
+    subgraph M[miRNA Metadata Schema]
+        MIR[mirnas]
+        MIR_META[canonical name, accession, family, arm, sequence, aliases]
+        MIR --> MIR_META
+    end
+
+    subgraph C[Interaction and Evidence Spine]
+        PAI[mirna_gene_pairs]
+
+        subgraph T[Transcript-Level Schema]
+            TX[transcripts]
+            TRK[transcript_feature_tracks]
+        end
+
+        subgraph R[Read / MRE-Level Schema]
+            OBS[site_observations]
+            OVL[site_transcript_overlaps]
+            MRE[mre_sites]
+        end
+
+        subgraph N[Nucleotide-Level Schema]
+            NUC[nucleotide_profiles]
+        end
+
+        subgraph E[Gene-Level Evidence]
+            EXP[experiments]
+            EFF[experiment_gene_effects]
+            PRD[predictors]
+            SCR[predictor_scores]
+        end
+    end
+
+    subgraph G[Gene Metadata Schema]
+        GEN[genes]
+        GEN_META[canonical symbol, accession, species, aliases]
+        GEN --> GEN_META
+    end
+
+    subgraph L[Literature Schema]
+        DOC[literature_documents]
+        MEN[literature_mentions]
+        AST[literature_assertions]
+    end
+
+    subgraph P[Provenance Schema]
+        RUN[ingestion_runs]
+    end
+
+    MIR --> PAI
+    GEN --> PAI
+    GEN --> TX
+
+    TX --> TRK
+    OBS --> OVL
+    TX --> OVL
+    OVL --> MRE
+    PAI --> MRE
+
+    OBS --> NUC
+    MRE --> NUC
+    TX --> NUC
+
+    EXP --> EFF
+    PAI --> EFF
+    PRD --> SCR
+    PAI --> SCR
+
+    DOC --> MEN
+    MEN --> AST
+    MIR --> AST
+    GEN --> AST
+
+    RUN -. provenance .-> EXP
+    RUN -. provenance .-> OBS
+    RUN -. provenance .-> DOC
+    RUN -. provenance .-> TRK

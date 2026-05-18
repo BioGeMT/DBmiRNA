@@ -1,0 +1,176 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "postgram_sample_transcripts",
+      "module_id": "postgram",
+      "role": "transcript_examples",
+      "local_path": "/homes/ezach01/PostGram/examples/sample_transcripts.jsonl",
+      "format": "jsonl",
+      "parser_hint": "postgram_transcript_jsonl",
+      "target_collections": [
+        "transcripts",
+        "transcript_feature_tracks"
+      ]
+    },
+    {
+      "dataset_id": "postgram_project_manifest",
+      "module_id": "postgram",
+      "role": "source_manifest",
+      "local_path": "/homes/ezach01/PostGram/configs/project.example.toml",
+      "format": "toml",
+      "parser_hint": "postgram_project_manifest",
+      "target_collections": [
+        "ingestion_runs"
+      ]
+    },
+    {
+      "dataset_id": "totalannotator_example_documents",
+      "module_id": "totalannotator",
+      "role": "document_corpus",
+      "local_path": "/homes/ezach01/TotalAnnotator/data/corpora/example_documents.json",
+      "format": "json",
+      "parser_hint": "totalannotator_document_corpus",
+      "target_collections": [
+        "literature_documents"
+      ]
+    },
+    {
+      "dataset_id": "estimalign_hejret_train",
+      "module_id": "estimalign",
+      "role": "site_observations_train",
+      "local_path": "/homes/ezach01/EstimAlign/data/raw/AGO2_CLASH_Hejret2023_train.tsv.gz",
+      "format": "tsv.gz",
+      "parser_hint": "estimalign_site_dataset",
+      "target_collections": [
+        "site_observations",
+        "nucleotide_profiles"
+      ]
+    },
+    {
+      "dataset_id": "estimalign_hejret_test",
+      "module_id": "estimalign",
+      "role": "site_observations_test",
+      "local_path": "/homes/ezach01/EstimAlign/data/raw/AGO2_CLASH_Hejret2023_test.tsv.gz",
+      "format": "tsv.gz",
+      "parser_hint": "estimalign_site_dataset",
+      "target_collections": [
+        "site_observations",
+        "nucleotide_profiles"
+      ]
+    },
+    {
+      "dataset_id": "estimalign_case_study_summary",
+      "module_id": "estimalign",
+      "role": "analysis_summary",
+      "local_path": "/homes/ezach01/EstimAlign/results/hejret_numIter_100_200_threads_65/final_refit/summary.csv",
+      "format": "csv",
+      "parser_hint": "estimalign_analysis_summary",
+      "target_collections": [
+        "ingestion_runs"
+      ]
+    },
+    {
+      "dataset_id": "funmirbench_experiment_registry",
+      "module_id": "funmirbench",
+      "role": "experiment_registry",
+      "local_path": "/homes/ezach01/FuNmiRBench/metadata/mirna_experiment_info.tsv",
+      "format": "tsv",
+      "parser_hint": "funmirbench_experiment_registry",
+      "target_collections": [
+        "mirnas",
+        "experiments"
+      ]
+    },
+    {
+      "dataset_id": "funmirbench_predictor_registry",
+      "module_id": "funmirbench",
+      "role": "predictor_registry",
+      "local_path": "/homes/ezach01/FuNmiRBench/metadata/predictions_info.tsv",
+      "format": "tsv",
+      "parser_hint": "funmirbench_predictor_registry",
+      "target_collections": [
+        "predictors"
+      ]
+    },
+    {
+      "dataset_id": "funmirbench_de_gse210778",
+      "module_id": "funmirbench",
+      "role": "experiment_de_table",
+      "local_path": "/homes/ezach01/FuNmiRBench/data/experiments/processed/18745741/GSE210778_edger_out_oe_hsa_miR_375_3p_oe.tsv",
+      "format": "tsv",
+      "parser_hint": "funmirbench_de_table",
+      "target_collections": [
+        "experiment_gene_effects",
+        "mirna_gene_pairs"
+      ]
+    },
+    {
+      "dataset_id": "funmirbench_targetscan_scores",
+      "module_id": "funmirbench",
+      "role": "predictor_scores",
+      "local_path": "/homes/ezach01/FuNmiRBench/data/predictions/targetscan/targetscan_standardized.tsv",
+      "format": "tsv",
+      "parser_hint": "funmirbench_predictor_scores",
+      "target_collections": [
+        "predictor_scores",
+        "mirna_gene_pairs"
+      ]
+    },
+    {
+      "dataset_id": "funmirbench_joined_mock",
+      "module_id": "funmirbench",
+      "role": "evaluation_joined_table",
+      "local_path": "/homes/ezach01/FuNmiRBench/data/joined/002_mock.tsv",
+      "format": "tsv",
+      "parser_hint": "benchmark_only",
+      "target_collections": [
+        "ingestion_runs"
+      ]
+    },
+    {
+      "dataset_id": "gra_raw_hejret_intervals",
+      "module_id": "genomic_region_annotator",
+      "role": "raw_intervals",
+      "local_path": "/homes/ezach01/genomic-region-annotator/data/raw/Hejret_2023.tsv",
+      "format": "tsv",
+      "parser_hint": "genomic_region_annotator_raw_intervals",
+      "target_collections": [
+        "site_observations"
+      ]
+    },
+    {
+      "dataset_id": "gra_step1_hejret_transcripts",
+      "module_id": "genomic_region_annotator",
+      "role": "step1_transcript_overlaps",
+      "local_path": "/homes/ezach01/genomic-region-annotator/data/processed/step1/Hejret_2023_annotated_transcripts.tsv",
+      "format": "tsv",
+      "parser_hint": "genomic_region_annotator_step1_transcripts",
+      "target_collections": [
+        "site_transcript_overlaps"
+      ]
+    },
+    {
+      "dataset_id": "gra_step1_hejret_matrix",
+      "module_id": "genomic_region_annotator",
+      "role": "step1_region_union_matrix",
+      "local_path": "/homes/ezach01/genomic-region-annotator/data/processed/step1/Hejret_2023_annotated_matrix.tsv",
+      "format": "tsv",
+      "parser_hint": "genomic_region_annotator_step1_matrix",
+      "target_collections": [
+        "nucleotide_profiles"
+      ]
+    },
+    {
+      "dataset_id": "gra_step2_hejret_site_summary",
+      "module_id": "genomic_region_annotator",
+      "role": "step2_site_summary",
+      "local_path": "/homes/ezach01/genomic-region-annotator/data/processed/step2/Hejret_2023_annotated_site_summary.tsv",
+      "format": "tsv",
+      "parser_hint": "genomic_region_annotator_step2_summary",
+      "target_collections": [
+        "mre_sites",
+        "mirna_gene_pairs"
+      ]
+    }
+  ]
+}

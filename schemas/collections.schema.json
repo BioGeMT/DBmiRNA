@@ -1,0 +1,1241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biogemt.internal/dbmirna/collections.schema.json",
+  "title": "DBmiRNA Collection Schema Bundle",
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringOrNull": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "integerOrNull": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "numberOrNull": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "freeObject": {
+      "type": "object"
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_repo"
+      ],
+      "properties": {
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_path": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "source_release": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "run_id": {
+          "$ref": "#/$defs/stringOrNull"
+        }
+      }
+    },
+    "sourceRefArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceRef"
+      }
+    },
+    "normalizationInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "canonical_release",
+        "status"
+      ],
+      "properties": {
+        "provider": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_release": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_release": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "source_name": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "source_accession": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "status": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "payloadRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "storage_mode"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "storage_mode": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "format": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "checksum": {
+          "$ref": "#/$defs/stringOrNull"
+        }
+      }
+    },
+    "mirnas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "canonical_name",
+        "species",
+        "sequence",
+        "id_namespace",
+        "aliases",
+        "source_refs"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "species": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sequence": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "id_namespace": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_accession": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "family": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "arm": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "aliases": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "normalization": {
+          "$ref": "#/$defs/normalizationInfo"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/sourceRefArray"
+        }
+      }
+    },
+    "genes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "canonical_symbol",
+        "species",
+        "id_namespace",
+        "canonical_accession",
+        "aliases",
+        "source_refs"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_symbol": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "species": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "id_namespace": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_accession": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "aliases": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "normalization": {
+          "$ref": "#/$defs/normalizationInfo"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/sourceRefArray"
+        }
+      }
+    },
+    "transcripts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "gene_id",
+        "id_namespace",
+        "canonical_accession",
+        "species",
+        "sequence_scope",
+        "source_refs"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "id_namespace": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_accession": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_symbol": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "species": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sequence": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "sequence_scope": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "genome_build": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "tx_start": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "tx_end": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "strand": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "localization_labels": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "feature_track_summary": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "sequence_length": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "normalization": {
+          "$ref": "#/$defs/normalizationInfo"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/sourceRefArray"
+        }
+      }
+    },
+    "transcript_feature_tracks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "transcript_id",
+        "track_name",
+        "source",
+        "kind",
+        "count",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "transcript_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "track_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "kind": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "payload_ref": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "type": "object"
+              },
+              "then": {
+                "$ref": "#/$defs/payloadRef"
+              }
+            }
+          ]
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "mirna_gene_pairs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "mirna_id",
+        "gene_id",
+        "species",
+        "evidence_counts",
+        "best_supported_transcript_ids",
+        "support_summary",
+        "source_refs"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "species": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "evidence_counts": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "best_supported_transcript_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "support_summary": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "source_refs": {
+          "$ref": "#/$defs/sourceRefArray"
+        }
+      }
+    },
+    "experiments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "dataset_id",
+        "mirna_id",
+        "mirna_name_raw",
+        "mirna_sequence",
+        "organism",
+        "experiment_type",
+        "de_table_path",
+        "source_repo",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dataset_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_name_raw": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_sequence": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "article_pubmed_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "geo_accession": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "organism": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "tested_cell_line": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "tissue": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "method": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "experiment_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "treatment": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "de_table_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "experiment_gene_effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "experiment_id",
+        "pair_id",
+        "mirna_id",
+        "gene_id",
+        "effect_direction",
+        "raw_row",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "experiment_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pair_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "logFC": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "FDR": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "PValue": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "logCPM": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "F_statistic": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "effect_direction": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "passes_default_threshold": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "raw_row": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "predictors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "tool_id",
+        "official_name",
+        "organism",
+        "score_type",
+        "score_direction",
+        "input_id_gene_type",
+        "canonical_id_gene_type",
+        "input_id_mirna_type",
+        "canonical_id_mirna_type",
+        "predictor_output_path",
+        "source_repo"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "tool_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "official_name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "organism": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "score_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "score_direction": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "score_range": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "input_id_gene_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_id_gene_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "input_id_mirna_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_id_mirna_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "predictor_output_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "predictor_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "predictor_id",
+        "pair_id",
+        "mirna_id",
+        "gene_id",
+        "score_raw",
+        "score_direction",
+        "source_row",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "predictor_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pair_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "score_raw": {
+          "type": "number"
+        },
+        "score_direction": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "score_rank_within_mirna": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "source_row": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "site_observations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "source_dataset",
+        "source_repo",
+        "mirna_sequence_raw",
+        "raw_row",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_dataset": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "mirna_name_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "mirna_family_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "mirna_sequence_raw": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "target_sequence_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "feature_label_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "label": {
+          "type": [
+            "integer",
+            "boolean",
+            "null"
+          ]
+        },
+        "chr": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "start": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "end": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "strand": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "read_len": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "gene_cluster_id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "gene_phyloP_ref": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "gene_phastCons_ref": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "raw_row": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "mirna_recognition_elements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "source_dataset",
+        "source_repo",
+        "source_split",
+        "source_row_index",
+        "label",
+        "mirna_id",
+        "mirna_name_raw",
+        "mirna_sequence_raw",
+        "target_sequence_raw",
+        "raw_row",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_dataset": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_split": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_row_index": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "label": {
+          "type": "integer"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_name_raw": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_family_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "mirna_sequence_raw": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "gene_name_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "gene_cluster_id": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "target_sequence_raw": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "feature_label_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "chr": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "start": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "end": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "strand": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "read_len": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "experiment_type": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "organism": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "raw_row": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "site_transcript_overlaps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "observation_id",
+        "transcript_id",
+        "gene_id",
+        "contained_100pct",
+        "overlap_tx_bp",
+        "overlap_exon_bp",
+        "overlap_cds_bp",
+        "overlap_utr5_bp",
+        "overlap_utr3_bp",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "observation_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "transcript_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_name_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "contained_100pct": {
+          "type": "boolean"
+        },
+        "overlap_tx_bp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlap_exon_bp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlap_cds_bp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlap_utr5_bp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "overlap_utr3_bp": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "read_start_in_tx_1based": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "read_end_in_tx_1based": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "overlap_start_genome_1based": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "overlap_end_genome_1based": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "mre_sites": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "pair_id",
+        "mirna_id",
+        "gene_id",
+        "transcript_id",
+        "observation_id",
+        "chr",
+        "start",
+        "end",
+        "strand",
+        "read_len",
+        "selection_policy",
+        "dominance_mode",
+        "dominant_region_selected",
+        "regions_present_selected",
+        "dominant_region_union",
+        "regions_present_union",
+        "ambiguous_union_vs_selected",
+        "n_passing_transcripts",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pair_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "transcript_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "observation_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "chr": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        },
+        "strand": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "read_len": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selection_policy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dominance_mode": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "selected_gene_name": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "dominant_region_selected": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "regions_present_selected": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dominant_region_union": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "regions_present_union": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "bp_utr3_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_cds_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_utr5_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_exon_other_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_intron_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_intergenic_selected": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_utr3_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_cds_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_utr5_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_exon_other_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_intron_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "bp_intergenic_union": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "ambiguous_union_vs_selected": {
+          "type": "boolean"
+        },
+        "n_passing_transcripts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "nucleotide_profiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "entity_type",
+        "entity_id",
+        "profile_type",
+        "length",
+        "storage_mode",
+        "metadata",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "entity_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "entity_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "profile_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "storage_mode": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "values": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "number",
+              "integer",
+              "string",
+              "boolean",
+              "null",
+              "array",
+              "object"
+            ]
+          }
+        },
+        "payload_ref": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "literature_documents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "document_id",
+        "title",
+        "abstract",
+        "source",
+        "metadata",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "document_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pmid": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "abstract": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "full_text": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "year": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "metadata": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "literature_mentions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "document_id",
+        "annotation_id",
+        "source",
+        "span_text",
+        "entity_type",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "document_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "annotation_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "span_text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "start": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "end": {
+          "$ref": "#/$defs/integerOrNull"
+        },
+        "entity_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "canonical_id_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "canonical_name_raw": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "resolved_mirna_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "resolved_gene_id": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "confidence": {
+          "$ref": "#/$defs/numberOrNull"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "literature_assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "document_id",
+        "mirna_id",
+        "gene_id",
+        "assertion_type",
+        "evidence_text",
+        "curation_status",
+        "run_id"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "document_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mirna_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "gene_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "assertion_type": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "direction": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "evidence_text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "curation_status": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "curator": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "run_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "ingestion_runs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "_id",
+        "source_repo",
+        "source_path",
+        "started_at",
+        "transform_version",
+        "checksums",
+        "row_counts"
+      ],
+      "properties": {
+        "_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_repo": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source_release": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "started_at": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "completed_at": {
+          "$ref": "#/$defs/stringOrNull"
+        },
+        "transform_version": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checksums": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "row_counts": {
+          "$ref": "#/$defs/freeObject"
+        },
+        "notes": {
+          "$ref": "#/$defs/stringOrNull"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Local generated outputs
+outputs/
+
+# Local PostgreSQL data/logs should stay outside the repo, but keep patterns here
+# in case a developer creates them under the project root.
+*.log
+postgres-data/
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.uv-cache/
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Reference screenshots should live in docs only when intentionally curated.
+dbdiagram.io---diagram-only-*.png

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbmirna"
+version = "0.1.0"
+description = "BioGeMT internal scaffold for a transcript-aware miRNA database."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "jsonschema>=4.0"
+]
+authors = [
+  { name = "BioGeMT Lab" }
+]
+
+[project.optional-dependencies]
+postgres = [
+  "psycopg[binary]>=3.1"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

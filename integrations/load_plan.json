@@ -1,0 +1,89 @@
+{
+  "phases": [
+    {
+      "phase": 1,
+      "name": "anchor_entities",
+      "collections": [
+        "mirnas",
+        "genes",
+        "transcripts"
+      ],
+      "preferred_modules": [
+        "funmirbench",
+        "postgram"
+      ],
+      "notes": "Create canonical identifiers and transcript references before evidence joins."
+    },
+    {
+      "phase": 2,
+      "name": "gene_level_evidence",
+      "collections": [
+        "experiments",
+        "experiment_gene_effects",
+        "predictors",
+        "predictor_scores",
+        "mirna_gene_pairs"
+      ],
+      "preferred_modules": [
+        "funmirbench"
+      ],
+      "notes": "Load perturbation evidence and predictor scores, then refresh pair rollups."
+    },
+    {
+      "phase": 3,
+      "name": "site_and_mre_evidence",
+      "collections": [
+        "site_observations",
+        "site_transcript_overlaps",
+        "mre_sites",
+        "nucleotide_profiles"
+      ],
+      "preferred_modules": [
+        "genomic_region_annotator",
+        "estimalign"
+      ],
+      "notes": "Preserve raw intervals first, then transcript overlaps, then selected-transcript site summaries."
+    },
+    {
+      "phase": 4,
+      "name": "transcript_context",
+      "collections": [
+        "transcript_feature_tracks",
+        "transcripts"
+      ],
+      "preferred_modules": [
+        "postgram"
+      ],
+      "notes": "Add localization labels and transcript feature context after anchor transcript entities exist."
+    },
+    {
+      "phase": 5,
+      "name": "literature",
+      "collections": [
+        "literature_documents",
+        "literature_mentions",
+        "literature_assertions"
+      ],
+      "preferred_modules": [
+        "totalannotator"
+      ],
+      "notes": "Store raw mentions first; only add assertion rows after normalization or curation."
+    },
+    {
+      "phase": 6,
+      "name": "provenance_refresh",
+      "collections": [
+        "ingestion_runs",
+        "mirna_gene_pairs"
+      ],
+      "preferred_modules": [
+        "postgram",
+        "totalannotator",
+        "estimalign",
+        "funmirbench",
+        "genomic_region_annotator"
+      ],
+      "notes": "Record checksums and update pair support summaries after each ingest batch."
+    }
+  ]
+}

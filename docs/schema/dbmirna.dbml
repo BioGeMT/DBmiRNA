@@ -1,0 +1,309 @@
+Project DBmiRNA {
+  database_type: "PostgreSQL"
+  Note: '''
+    Transcript-aware miRNA knowledgebase.
+    miRNA and gene metadata are anchors. Transcript, read/MRE,
+    nucleotide, evidence, literature, and provenance schemas preserve
+    source context between those anchors.
+  '''
+}
+
+Table core.mirnas {
+  id text [pk]
+  canonical_name text [not null]
+  species text [not null]
+  sequence text
+  id_namespace text [not null]
+  canonical_accession text
+  family text
+  arm text
+  aliases text[] [not null]
+  normalization jsonb [not null]
+  source_refs jsonb [not null]
+}
+
+Table core.genes {
+  id text [pk]
+  canonical_symbol text [not null]
+  species text [not null]
+  id_namespace text [not null]
+  canonical_accession text [not null]
+  aliases text[] [not null]
+  normalization jsonb [not null]
+  source_refs jsonb [not null]
+}
+
+Table core.transcripts {
+  id text [pk]
+  gene_id text [not null, ref: > core.genes.id]
+  id_namespace text [not null]
+  canonical_accession text [not null]
+  gene_symbol text
+  species text [not null]
+  sequence text
+  sequence_scope text [not null]
+  genome_build text
+  tx_start bigint
+  tx_end bigint
+  strand text
+  normalization jsonb [not null]
+  source_refs jsonb [not null]
+}
+
+Table core.mirna_gene_pairs {
+  id text [pk]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  gene_id text [not null, ref: > core.genes.id]
+  species text [not null]
+  evidence_counts jsonb [not null]
+  best_supported_transcript_ids text[] [not null]
+  support_summary jsonb [not null]
+  source_refs jsonb [not null]
+
+  indexes {
+    (mirna_id, gene_id) [unique]
+  }
+}
+
+Table core.transcript_feature_tracks {
+  id text [pk]
+  transcript_id text [not null, ref: > core.transcripts.id]
+  track_name text [not null]
+  source text [not null]
+  kind text [not null]
+  count integer [not null]
+  payload_ref jsonb
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.site_observations {
+  id text [pk]
+  source_dataset text [not null]
+  source_repo text [not null]
+  mirna_id text [ref: > core.mirnas.id]
+  mirna_name_raw text
+  mirna_family_raw text
+  mirna_sequence_raw text [not null]
+  target_sequence_raw text
+  feature_label_raw text
+  label integer
+  chr text
+  start_pos bigint
+  end_pos bigint
+  strand text
+  read_len integer
+  gene_cluster_id text
+  raw_row jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.mirna_recognition_elements {
+  id text [pk]
+  source_dataset text [not null]
+  source_repo text [not null]
+  source_split text [not null]
+  source_row_index integer [not null]
+  label integer [not null]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  mirna_name_raw text [not null]
+  mirna_family_raw text
+  mirna_sequence_raw text [not null]
+  gene_id text [ref: > core.genes.id]
+  gene_name_raw text
+  gene_cluster_id text
+  target_sequence_raw text [not null]
+  feature_label_raw text
+  chr text
+  start_pos bigint
+  end_pos bigint
+  strand text
+  read_len integer
+  experiment_type text
+  organism text
+  raw_row jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+
+  indexes {
+    (source_dataset, source_split)
+    mirna_id
+    gene_id
+    (chr, start_pos, end_pos)
+  }
+}
+
+Table evidence.site_transcript_overlaps {
+  id text [pk]
+  observation_id text [not null, ref: > evidence.site_observations.id]
+  transcript_id text [not null, ref: > core.transcripts.id]
+  gene_id text [not null, ref: > core.genes.id]
+  gene_name_raw text
+  contained_100pct boolean [not null]
+  overlap_tx_bp integer [not null]
+  overlap_exon_bp integer [not null]
+  overlap_cds_bp integer [not null]
+  overlap_utr5_bp integer [not null]
+  overlap_utr3_bp integer [not null]
+  read_start_in_tx_1based integer
+  read_end_in_tx_1based integer
+  overlap_start_genome_1based bigint
+  overlap_end_genome_1based bigint
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.mre_sites {
+  id text [pk]
+  pair_id text [not null, ref: > core.mirna_gene_pairs.id]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  gene_id text [not null, ref: > core.genes.id]
+  transcript_id text [not null, ref: > core.transcripts.id]
+  observation_id text [not null, ref: > evidence.site_observations.id]
+  chr text [not null]
+  start_pos bigint [not null]
+  end_pos bigint [not null]
+  strand text [not null]
+  read_len integer [not null]
+  selection_policy text [not null]
+  dominance_mode text [not null]
+  selected_gene_name text
+  dominant_region_selected text [not null]
+  regions_present_selected text [not null]
+  dominant_region_union text [not null]
+  regions_present_union text [not null]
+  ambiguous_union_vs_selected boolean [not null]
+  n_passing_transcripts integer [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.nucleotide_profiles {
+  id text [pk]
+  entity_type text [not null]
+  entity_id text [not null]
+  profile_type text [not null]
+  length integer [not null]
+  storage_mode text [not null]
+  values_json jsonb
+  payload_ref jsonb
+  metadata jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.experiments {
+  id text [pk]
+  dataset_id text [not null]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  mirna_name_raw text [not null]
+  mirna_sequence text [not null]
+  article_pubmed_id text
+  geo_accession text
+  organism text [not null]
+  tested_cell_line text
+  tissue text
+  method text
+  experiment_type text [not null]
+  treatment text
+  de_table_path text [not null]
+  source_repo text [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.experiment_gene_effects {
+  id text [pk]
+  experiment_id text [not null, ref: > evidence.experiments.id]
+  pair_id text [not null, ref: > core.mirna_gene_pairs.id]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  gene_id text [not null, ref: > core.genes.id]
+  logfc double
+  fdr double
+  pvalue double
+  logcpm double
+  f_statistic double
+  effect_direction text [not null]
+  passes_default_threshold boolean
+  raw_row jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table evidence.predictors {
+  id text [pk]
+  tool_id text [not null]
+  official_name text [not null]
+  organism text [not null]
+  score_type text [not null]
+  score_direction text [not null]
+  score_range text
+  input_id_gene_type text [not null]
+  canonical_id_gene_type text [not null]
+  input_id_mirna_type text [not null]
+  canonical_id_mirna_type text [not null]
+  predictor_output_path text [not null]
+  source_repo text [not null]
+}
+
+Table evidence.predictor_scores {
+  id text [pk]
+  predictor_id text [not null, ref: > evidence.predictors.id]
+  pair_id text [not null, ref: > core.mirna_gene_pairs.id]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  gene_id text [not null, ref: > core.genes.id]
+  score_raw double [not null]
+  score_direction text [not null]
+  score_rank_within_mirna integer
+  source_row jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table literature.literature_documents {
+  id text [pk]
+  document_id text [not null]
+  pmid text
+  title text [not null]
+  abstract text [not null]
+  full_text text
+  source text [not null]
+  year text
+  metadata jsonb [not null]
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table literature.literature_mentions {
+  id text [pk]
+  document_id text [not null, ref: > literature.literature_documents.id]
+  annotation_id text [not null]
+  source text [not null]
+  span_text text [not null]
+  start_pos integer
+  end_pos integer
+  entity_type text [not null]
+  canonical_id_raw text
+  canonical_name_raw text
+  resolved_mirna_id text [ref: > core.mirnas.id]
+  resolved_gene_id text [ref: > core.genes.id]
+  confidence double
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table literature.literature_assertions {
+  id text [pk]
+  document_id text [not null, ref: > literature.literature_documents.id]
+  mirna_id text [not null, ref: > core.mirnas.id]
+  gene_id text [not null, ref: > core.genes.id]
+  assertion_type text [not null]
+  direction text
+  evidence_text text [not null]
+  curation_status text [not null]
+  curator text
+  run_id text [not null, ref: > provenance.ingestion_runs.id]
+}
+
+Table provenance.ingestion_runs {
+  id text [pk]
+  source_repo text [not null]
+  source_path text [not null]
+  source_release text
+  started_at timestamptz
+  completed_at timestamptz
+  transform_version text [not null]
+  checksums jsonb [not null]
+  row_counts jsonb [not null]
+  notes text
+}

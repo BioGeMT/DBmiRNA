@@ -1,0 +1,65 @@
+{
+  "providers": {
+    "mirna": {
+      "provider": "miRBase",
+      "canonical_release": "v22",
+      "accepted_releases": [
+        "v22"
+      ],
+      "canonical_preference": [
+        "accession",
+        "name"
+      ],
+      "fallback_namespace_suffix": "name"
+    },
+    "gene": {
+      "provider": "Ensembl",
+      "canonical_release": "v115",
+      "accepted_releases": [
+        "v109",
+        "v115"
+      ],
+      "canonical_preference": [
+        "accession"
+      ]
+    },
+    "transcript": {
+      "provider": "Ensembl",
+      "canonical_release": "v115",
+      "accepted_releases": [
+        "v109",
+        "v115"
+      ],
+      "canonical_preference": [
+        "accession"
+      ]
+    }
+  },
+  "source_defaults": {
+    "FuNmiRBench": {
+      "mirna_release": "v22",
+      "gene_release_default": "v109",
+      "transcript_release_default": "v115"
+    },
+    "genomic-region-annotator": {
+      "mirna_release": "v22",
+      "gene_release_default": "v115",
+      "transcript_release_default": "v115"
+    },
+    "PostGram": {
+      "mirna_release": "v22",
+      "gene_release_default": "v115",
+      "transcript_release_default": "v115"
+    },
+    "EstimAlign": {
+      "mirna_release": "v22",
+      "gene_release_default": "v115",
+      "transcript_release_default": "v115"
+    },
+    "TotalAnnotator": {
+      "mirna_release": "v22",
+      "gene_release_default": "v115",
+      "transcript_release_default": "v115"
+    }
+  }
+}

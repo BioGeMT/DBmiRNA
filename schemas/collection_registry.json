@@ -1,0 +1,234 @@
+{
+  "database_name": "DBmiRNA",
+  "schema_bundle": "schemas/collections.schema.json",
+  "collections": [
+    {
+      "name": "mirnas",
+      "schema_def": "mirnas",
+      "purpose": "Canonical mature miRNA entities.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "canonical_name",
+        "canonical_accession",
+        "family",
+        "species"
+      ]
+    },
+    {
+      "name": "genes",
+      "schema_def": "genes",
+      "purpose": "Canonical gene entities.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "canonical_symbol",
+        "canonical_accession",
+        "species"
+      ]
+    },
+    {
+      "name": "transcripts",
+      "schema_def": "transcripts",
+      "purpose": "Canonical transcript entities with transcript-aware context.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "gene_id",
+        "canonical_accession"
+      ]
+    },
+    {
+      "name": "transcript_feature_tracks",
+      "schema_def": "transcript_feature_tracks",
+      "purpose": "Transcript-level feature tracks from PostGram and future track loaders.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "transcript_id",
+        "source",
+        "track_name"
+      ]
+    },
+    {
+      "name": "mirna_gene_pairs",
+      "schema_def": "mirna_gene_pairs",
+      "purpose": "Canonical interaction hub connecting miRNAs, genes, and evidence rollups.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "mirna_id",
+        "gene_id"
+      ]
+    },
+    {
+      "name": "experiments",
+      "schema_def": "experiments",
+      "purpose": "Experiment metadata, mainly from FuNmiRBench.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "dataset_id",
+        "mirna_id",
+        "geo_accession",
+        "article_pubmed_id",
+        "experiment_type"
+      ]
+    },
+    {
+      "name": "experiment_gene_effects",
+      "schema_def": "experiment_gene_effects",
+      "purpose": "Gene-level perturbation evidence from differential expression tables.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "experiment_id",
+        "pair_id",
+        "gene_id",
+        "passes_default_threshold"
+      ]
+    },
+    {
+      "name": "predictors",
+      "schema_def": "predictors",
+      "purpose": "Predictor metadata and scoring-system registry.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "tool_id",
+        "official_name"
+      ]
+    },
+    {
+      "name": "predictor_scores",
+      "schema_def": "predictor_scores",
+      "purpose": "Predictor-derived miRNA-gene scores.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "predictor_id",
+        "pair_id",
+        "mirna_id",
+        "gene_id"
+      ]
+    },
+    {
+      "name": "site_observations",
+      "schema_def": "site_observations",
+      "purpose": "Raw site or interval observations before transcript selection.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "source_dataset",
+        "mirna_id",
+        "chr",
+        "start",
+        "end",
+        "strand"
+      ]
+    },
+    {
+      "name": "mirna_recognition_elements",
+      "schema_def": "mirna_recognition_elements",
+      "purpose": "Primary MRE/read-level CLASH records with labels, sequences, coordinates, split membership, and raw source context.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "source_dataset",
+        "source_split",
+        "label",
+        "mirna_id",
+        "gene_id",
+        "chr",
+        "start",
+        "end"
+      ]
+    },
+    {
+      "name": "site_transcript_overlaps",
+      "schema_def": "site_transcript_overlaps",
+      "purpose": "All transcript overlaps for each site observation.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "observation_id",
+        "transcript_id",
+        "gene_id"
+      ]
+    },
+    {
+      "name": "mre_sites",
+      "schema_def": "mre_sites",
+      "purpose": "Selected-transcript MRE/site summaries with region composition.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "pair_id",
+        "transcript_id",
+        "gene_id",
+        "mirna_id",
+        "dominant_region_selected"
+      ]
+    },
+    {
+      "name": "nucleotide_profiles",
+      "schema_def": "nucleotide_profiles",
+      "purpose": "Dense nucleotide-level arrays, matrices, alignments, and track payload references.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "entity_type",
+        "entity_id",
+        "profile_type"
+      ]
+    },
+    {
+      "name": "literature_documents",
+      "schema_def": "literature_documents",
+      "purpose": "Canonical literature documents from TotalAnnotator pipelines.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "pmid",
+        "source"
+      ]
+    },
+    {
+      "name": "literature_mentions",
+      "schema_def": "literature_mentions",
+      "purpose": "Raw mention-level entity annotations from literature.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "document_id",
+        "entity_type",
+        "resolved_mirna_id",
+        "resolved_gene_id"
+      ]
+    },
+    {
+      "name": "literature_assertions",
+      "schema_def": "literature_assertions",
+      "purpose": "Curated statement-level relation assertions grounded in documents.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "document_id",
+        "mirna_id",
+        "gene_id",
+        "curation_status"
+      ]
+    },
+    {
+      "name": "ingestion_runs",
+      "schema_def": "ingestion_runs",
+      "purpose": "Ingestion provenance, checksums, and row-count summaries.",
+      "primary_key": "_id",
+      "indexes": [
+        "_id",
+        "source_repo",
+        "started_at"
+      ]
+    }
+  ]
+}

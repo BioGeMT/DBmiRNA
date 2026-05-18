@@ -1,0 +1,187 @@
+{
+  "modules": [
+    {
+      "module_id": "postgram",
+      "repo_root": "/homes/ezach01/PostGram",
+      "description": "Transcript-centered reference and feature-track scaffolding with localization-aware labels.",
+      "ingest_priority": 4,
+      "source_artifacts": [
+        {
+          "artifact_id": "postgram_project_manifest",
+          "path": "/homes/ezach01/PostGram/configs/project.example.toml",
+          "format": "toml",
+          "parser": "postgram_project_manifest",
+          "target_collections": [
+            "ingestion_runs"
+          ]
+        },
+        {
+          "artifact_id": "postgram_transcript_records",
+          "path": "/homes/ezach01/PostGram/examples/sample_transcripts.jsonl",
+          "format": "jsonl",
+          "parser": "postgram_transcript_jsonl",
+          "target_collections": [
+            "transcripts",
+            "transcript_feature_tracks"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "totalannotator",
+      "repo_root": "/homes/ezach01/TotalAnnotator",
+      "description": "Literature ingestion and entity mention extraction from PMIDs, corpora, and annotator outputs.",
+      "ingest_priority": 5,
+      "source_artifacts": [
+        {
+          "artifact_id": "totalannotator_pipeline_config",
+          "path": "/homes/ezach01/TotalAnnotator/configs/pipeline.toml",
+          "format": "toml",
+          "parser": "totalannotator_pipeline_config",
+          "target_collections": [
+            "ingestion_runs"
+          ]
+        },
+        {
+          "artifact_id": "totalannotator_example_corpus",
+          "path": "/homes/ezach01/TotalAnnotator/data/corpora/example_documents.json",
+          "format": "json",
+          "parser": "totalannotator_document_corpus",
+          "target_collections": [
+            "literature_documents"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "estimalign",
+      "repo_root": "/homes/ezach01/EstimAlign",
+      "description": "Labeled miRNA-target site observations, conservation vectors, and alignment-based modeling outputs.",
+      "ingest_priority": 3,
+      "source_artifacts": [
+        {
+          "artifact_id": "estimalign_hejret_train",
+          "path": "/homes/ezach01/EstimAlign/data/raw/AGO2_CLASH_Hejret2023_train.tsv.gz",
+          "format": "tsv.gz",
+          "parser": "estimalign_site_dataset",
+          "target_collections": [
+            "site_observations",
+            "nucleotide_profiles"
+          ]
+        },
+        {
+          "artifact_id": "estimalign_hejret_test",
+          "path": "/homes/ezach01/EstimAlign/data/raw/AGO2_CLASH_Hejret2023_test.tsv.gz",
+          "format": "tsv.gz",
+          "parser": "estimalign_site_dataset",
+          "target_collections": [
+            "site_observations",
+            "nucleotide_profiles"
+          ]
+        },
+        {
+          "artifact_id": "estimalign_case_study_outputs",
+          "path": "/homes/ezach01/EstimAlign/results",
+          "format": "directory",
+          "parser": "estimalign_analysis_outputs",
+          "target_collections": [
+            "nucleotide_profiles",
+            "ingestion_runs"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "funmirbench",
+      "repo_root": "/homes/ezach01/FuNmiRBench",
+      "description": "Experiment metadata, DE tables, predictor registry, and standardized miRNA-gene score tables.",
+      "ingest_priority": 1,
+      "source_artifacts": [
+        {
+          "artifact_id": "funmirbench_experiment_registry",
+          "path": "/homes/ezach01/FuNmiRBench/metadata/mirna_experiment_info.tsv",
+          "format": "tsv",
+          "parser": "funmirbench_experiment_registry",
+          "target_collections": [
+            "mirnas",
+            "experiments"
+          ]
+        },
+        {
+          "artifact_id": "funmirbench_predictor_registry",
+          "path": "/homes/ezach01/FuNmiRBench/metadata/predictions_info.tsv",
+          "format": "tsv",
+          "parser": "funmirbench_predictor_registry",
+          "target_collections": [
+            "predictors"
+          ]
+        },
+        {
+          "artifact_id": "funmirbench_de_tables",
+          "path": "/homes/ezach01/FuNmiRBench/data/experiments/processed/18745741",
+          "format": "directory",
+          "parser": "funmirbench_de_table",
+          "target_collections": [
+            "experiment_gene_effects",
+            "mirna_gene_pairs"
+          ]
+        },
+        {
+          "artifact_id": "funmirbench_standardized_predictions",
+          "path": "/homes/ezach01/FuNmiRBench/data/predictions",
+          "format": "directory",
+          "parser": "funmirbench_predictor_scores",
+          "target_collections": [
+            "predictor_scores",
+            "mirna_gene_pairs"
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "genomic_region_annotator",
+      "repo_root": "/homes/ezach01/genomic-region-annotator",
+      "description": "Evidence-preserving transcript overlaps, union region matrices, and selected-transcript site summaries.",
+      "ingest_priority": 2,
+      "source_artifacts": [
+        {
+          "artifact_id": "gra_raw_intervals",
+          "path": "/homes/ezach01/genomic-region-annotator/data/raw/Hejret_2023.tsv",
+          "format": "tsv",
+          "parser": "genomic_region_annotator_raw_intervals",
+          "target_collections": [
+            "site_observations"
+          ]
+        },
+        {
+          "artifact_id": "gra_step1_transcript_overlaps",
+          "path": "/homes/ezach01/genomic-region-annotator/data/processed/step1/Hejret_2023_annotated_transcripts.tsv",
+          "format": "tsv",
+          "parser": "genomic_region_annotator_step1_transcripts",
+          "target_collections": [
+            "site_transcript_overlaps"
+          ]
+        },
+        {
+          "artifact_id": "gra_step1_union_matrix",
+          "path": "/homes/ezach01/genomic-region-annotator/data/processed/step1/Hejret_2023_annotated_matrix.tsv",
+          "format": "tsv",
+          "parser": "genomic_region_annotator_step1_matrix",
+          "target_collections": [
+            "nucleotide_profiles"
+          ]
+        },
+        {
+          "artifact_id": "gra_step2_site_summary",
+          "path": "/homes/ezach01/genomic-region-annotator/data/processed/step2/Hejret_2023_annotated_site_summary.tsv",
+          "format": "tsv",
+          "parser": "genomic_region_annotator_step2_summary",
+          "target_collections": [
+            "mre_sites",
+            "mirna_gene_pairs"
+          ]
+        }
+      ]
+    }
+  ]
+}
