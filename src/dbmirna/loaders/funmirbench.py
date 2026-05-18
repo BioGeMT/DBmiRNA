@@ -21,9 +21,6 @@ from dbmirna.utils import (
 )
 
 
-DEFAULT_REPO_ROOT = Path("/homes/ezach01/FuNmiRBench")
-
-
 def _release_from_namespace(value: object) -> str | None:
     text = clean_nullable(value)
     if text is None:
@@ -46,7 +43,7 @@ def _source_ref(path: str | Path, *, source_repo: str, artifact_id: str, run_id:
 def export_funmirbench(
     *,
     out_dir: str | Path,
-    repo_root: str | Path = DEFAULT_REPO_ROOT,
+    repo_root: str | Path,
     max_experiments: int | None = None,
     include_predictor_scores: bool = True,
     predictor_tools: list[str] | None = None,
