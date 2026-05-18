@@ -117,6 +117,28 @@ PYTHONPATH=src python -m dbmirna load-hejret-cache \
   --cache-root /path/to/AGO2_CLASH_Hejret2023
 ```
 
+Export a Zenodo MRE TSV or TSV.GZ file. Columns matching the base MRE layout are exported to `mirna_recognition_elements`; numeric predictor columns such as `TargetScanCnn_McGeary2019`, `miRBenchCNN_Manakov`, and `miRBind2` are exported to `mre_predictor_scores`; per-nucleotide conservation arrays such as `gene_phyloP` and `gene_phastCons` are exported to `nucleotide_profiles`.
+
+```bash
+PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
+  --out-dir outputs/hejret_test_predictions \
+  --input-path /path/to/AGO2_CLASH_Hejret2023_test_predictions.tsv \
+  --dataset-id AGO2_CLASH_Hejret2023_test_predictions \
+  --source-url https://zenodo.org/records/18682335 \
+  --source-split test \
+  --experiment-type AGO2_CLASH
+```
+
+```bash
+PYTHONPATH=src python -m dbmirna load-zenodo-mre-tsv \
+  --out-dir outputs/manakov_leftout \
+  --input-path /path/to/AGO2_eCLIP_Manakov2022_leftout.tsv.gz \
+  --dataset-id AGO2_eCLIP_Manakov2022_leftout \
+  --source-url https://zenodo.org/records/14734014 \
+  --source-split leftout \
+  --experiment-type AGO2_eCLIP
+```
+
 Export a genomic-region-annotator sample:
 
 ```bash
