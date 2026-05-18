@@ -7,6 +7,7 @@ import sys
 from .loaders.funmirbench import export_funmirbench
 from .loaders.genomic_region_annotator import export_genomic_region_annotator
 from .loaders.hejret_cache import export_hejret_cache
+from .loaders.zenodo_mre_tsv import export_zenodo_mre_tsv
 from .normalization import build_normalization_info
 from .postgres import initialize_postgres, load_jsonl_bundle_to_postgres
 from .registry import build_module_info, build_overview, validate_project
@@ -59,6 +60,15 @@ def main() -> int:
     hejret_parser.add_argument("--cache-root", required=True, help="Hejret cache root containing train/test dataset.tsv files.")
     hejret_parser.add_argument("--split", action="append", dest="splits", default=None, help="Split to export. Repeat for multiple splits. Defaults to train and test.")
     hejret_parser.add_argument("--max-rows-per-split", type=int, default=None, help="Optional row cap per split.")
+
+    zenodo_parser = subparsers.add_parser("load-zenodo-mre-tsv", help="Export a Zenodo MRE TSV/TSV.GZ file to a DBmiRNA JSONL bundle.")
+    zenodo_parser.add_argument("--out-dir", required=True, help="Output directory for JSONL bundle.")
+    zenodo_parser.add_argument("--input-path", required=True, help="Input TSV or TSV.GZ path.")
+    zenodo_parser.add_argument("--dataset-id", required=True, help="Dataset id, for example AGO2_CLASH_Hejret2023_test_predictions.")
+    zenodo_parser.add_argument("--source-url", default=None, help="Source Zenodo record URL.")
+    zenodo_parser.add_argument("--source-split", default="unspecified", help="Dataset split, for example test or leftout.")
+    zenodo_parser.add_argument("--experiment-type", default=None, help="Experiment type, for example AGO2_CLASH or AGO2_eCLIP.")
+    zenodo_parser.add_argument("--max-rows", type=int, default=None, help="Optional row cap.")
 
     args = parser.parse_args()
 
@@ -137,6 +147,19 @@ def main() -> int:
             cache_root=args.cache_root,
             splits=args.splits,
             max_rows_per_split=args.max_rows_per_split,
+        )
+        print(json.dumps(manifest, indent=2))
+        return 0
+
+    if command == "load-zenodo-mre-tsv":
+        manifest = export_zenodo_mre_tsv(
+            out_dir=args.out_dir,
+            input_path=args.input_path,
+            dataset_id=args.dataset_id,
+            source_url=args.source_url,
+            source_split=args.source_split,
+            experiment_type=args.experiment_type,
+            max_rows=args.max_rows,
         )
         print(json.dumps(manifest, indent=2))
         return 0
